@@ -1,0 +1,131 @@
+<meta charset="utf-8">
+<title>Baseline Breaker Plan & Budget</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@500;600;700&display=swap">
+<style>
+:root { --bg:#f6f5ef; --surface:#fff; --ink:#14201a; --muted:#5c6b62; --line:#dedccf; --accent:#1f6b5c; --accent-ink:#fff; --ball:#c9d824; --ball-ink:#1a2205; --clay:#c4572a; --chip:#eef0e4; --font-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif; --font-body:"Manrope","Helvetica Neue",Arial,sans-serif; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --chip:#1a2b22; } }
+:root[data-theme="dark"] { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --chip:#1a2b22; }
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
+.page{max-width:900px;margin:0 auto;padding:48px 24px 80px} header.hero{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:36px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--clay)}
+h1{font-family:var(--font-display);font-weight:900;font-size:clamp(44px,8vw,72px);line-height:.95;margin:8px 0 14px;text-transform:uppercase;text-wrap:balance} h1 .accent{color:var(--accent)}
+.lede{font-size:18px;color:var(--muted);max-width:62ch;margin:0}
+.meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;font-size:13px;color:var(--muted)} .meta b{color:var(--ink)}
+h2{font-family:var(--font-display);font-weight:900;font-size:34px;text-transform:uppercase;margin:44px 0 14px;line-height:1} h3{font-size:17px;font-weight:700;margin:26px 0 8px} p{max-width:70ch}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px} .kpi .k{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)} .kpi .v{font-family:var(--font-display);font-weight:900;font-size:34px;line-height:1.05;margin-top:6px;color:var(--accent)} .kpi .n{font-size:13px;color:var(--muted);margin-top:4px}
+.table-wrap{overflow-x:auto;margin:14px 0} table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top} th{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--chip)} tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums} tr.total td{font-weight:700;background:var(--chip)}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--chip);white-space:nowrap} .chip.done{background:var(--accent);color:var(--accent-ink)}
+.gantt{display:grid;grid-template-columns:210px repeat(12,1fr);gap:4px 0;align-items:center;margin:16px 0;font-size:13px;min-width:720px}
+.gantt .head{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.gantt .lbl{padding:6px 10px 6px 0;font-weight:600} .gantt .bar{height:22px;border-radius:6px;background:var(--accent);opacity:.9}
+.gantt .bar.alt{background:var(--clay)} .gantt .bar.rev{background:var(--ball)} .gantt .bar.soft{background:var(--chip);border:1px dashed var(--line)}
+.note{border-left:3px solid var(--ball);padding:10px 16px;background:var(--surface);border-radius:0 12px 12px 0;margin:16px 0;color:var(--muted);font-size:14.5px}
+ul.tight{padding-left:20px;margin:8px 0} ul.tight li{margin:4px 0}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+</style>
+<div class="page">
+<header class="hero">
+  <div class="eyebrow">Deliverables, timeline &amp; budget · Prepared by Zyphex Tech · September 2026</div>
+  <h1>Baseline Breaker <span class="accent">plan &amp; budget</span></h1>
+  <p class="lede">What will be delivered, when, and what it costs: the development investment by release, and the monthly running cost after launch at two audience sizes, up to 500 monthly players and 500 to 10,000 monthly players.</p>
+  <div class="meta"><span><b>Currency</b> INR, USD shown at ₹84</span><span><b>Rate</b> ₹12,000 per engineering day (≈ $143)</span><span><b>Taxes</b> excluded</span></div>
+</header>
+
+<div class="kpis">
+  <div class="kpi"><div class="k">Development, all releases</div><div class="v">₹10.8 lakh</div><div class="n">≈ $12,860 · 90 engineering days over 12 weeks</div></div>
+  <div class="kpi"><div class="k">Monthly, 0–500 players</div><div class="v">₹16,800</div><div class="n">≈ $200 with Standby support · ₹800 without</div></div>
+  <div class="kpi"><div class="k">Monthly, 500–10k players</div><div class="v">₹34,900</div><div class="n">≈ $415 with Rally support · ₹2,900 without</div></div>
+  <div class="kpi"><div class="k">One-time platform fees</div><div class="v">≈ ₹10,400</div><div class="n">Apple annual + Google one-time</div></div>
+</div>
+
+<h2>1. Deliverables and timeline</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Release</th><th>Deliverables</th><th>Weeks</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><b>Version 1.0</b><br>Delivered</td><td>Web app live; Android release bundle and test APK; iOS Xcode project; source code; signing keys; brand asset pack; technical documentation; store submission kit; QA report; feature roadmap; support proposal.</td><td class="num">Done</td><td><span class="chip done">Complete</span></td></tr>
+<tr><td><b>Release 1.0 · Ship</b></td><td>Real-device QA and performance tuning; recorded sound set; analytics and crash reporting; store listings and screenshots; submissions and review handling on Google Play and the App Store.</td><td class="num">1–4</td><td><span class="chip">Next</span></td></tr>
+<tr><td><b>Release 1.1 · Play every day</b></td><td>Accounts and cloud save; global, weekly and friends leaderboards; daily challenge; endless mode and difficulty settings; unlockable cosmetics; achievements with Game Center and Play Games; push notifications; share cards; client branding system; installable offline web app; five languages; accessibility pass; onboarding; automated tests and CI.</td><td class="num">4–8</td><td><span class="chip">Planned</span></td></tr>
+<tr><td><b>Release 1.2 · Grow</b></td><td>Rewarded ads and cosmetic purchases; seasonal events and remote configuration; tournaments; four new boosts and six boss courts; level editor with shareable codes; ghost rally.</td><td class="num">8–12</td><td><span class="chip">Planned</span></td></tr>
+<tr><td><b>Later</b></td><td>Live head-to-head multiplayer; controller and TV builds. Quoted separately once there is an audience.</td><td class="num">On demand</td><td><span class="chip">Optional</span></td></tr>
+</tbody></table></div>
+
+<div class="table-wrap">
+<div class="gantt">
+  <div class="head" style="text-align:left">Workstream</div>
+  <div class="head">W1</div><div class="head">W2</div><div class="head">W3</div><div class="head">W4</div><div class="head">W5</div><div class="head">W6</div><div class="head">W7</div><div class="head">W8</div><div class="head">W9</div><div class="head">W10</div><div class="head">W11</div><div class="head">W12</div>
+  <div class="lbl">Client: store accounts</div><div class="bar soft" style="grid-column:2/span 2"></div>
+  <div class="lbl">QA, performance, sound, analytics</div><div class="bar" style="grid-column:2/span 2"></div>
+  <div class="lbl">Listings, submission, review</div><div class="bar rev" style="grid-column:4/span 1"></div>
+  <div class="lbl">1.0 live</div><div class="bar rev" style="grid-column:5/span 1;opacity:.5"></div>
+  <div class="lbl">Accounts, backend, leaderboards</div><div class="bar alt" style="grid-column:4/span 3"></div>
+  <div class="lbl">Daily, cosmetics, achievements, push</div><div class="bar alt" style="grid-column:6/span 3"></div>
+  <div class="lbl">Branding, offline, languages, tests</div><div class="bar alt" style="grid-column:8/span 1"></div>
+  <div class="lbl">1.1 submission</div><div class="bar rev" style="grid-column:9/span 1"></div>
+  <div class="lbl">Monetisation, events, tournaments</div><div class="bar" style="grid-column:9/span 3"></div>
+  <div class="lbl">Content, editor, ghost rally</div><div class="bar" style="grid-column:11/span 2"></div>
+  <div class="lbl">1.2 submission</div><div class="bar rev" style="grid-column:13/span 1"></div>
+</div>
+</div>
+<p>Go-live dates depend on store review (Apple 1–3 days per round, Google 3–7 days for a new app) and on the client's developer accounts being opened in week 1. Apple company verification can take up to two weeks.</p>
+
+<h2>2. Development cost</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Release</th><th>Scope</th><th class="num">Days</th><th class="num">INR</th><th class="num">USD</th></tr></thead>
+<tbody>
+<tr><td>Version 1.0 build</td><td>Engine, 3D stadium, 30 courts, six boosts, combo scoring, three platforms, all documents</td><td class="num">12</td><td class="num">Delivered</td><td class="num">—</td></tr>
+<tr><td>Release 1.0 · Ship</td><td>Device QA, performance, sound, analytics, listings, submissions</td><td class="num">15</td><td class="num">₹1,80,000</td><td class="num">$2,140</td></tr>
+<tr><td>Release 1.1 · Play every day</td><td>Accounts, boards, daily, endless, cosmetics, achievements, push, share, branding, offline, languages, accessibility, tests</td><td class="num">39</td><td class="num">₹4,68,000</td><td class="num">$5,570</td></tr>
+<tr><td>Release 1.2 · Grow</td><td>Ads and purchases, events, tournaments, new boosts and boss courts, editor, ghost rally</td><td class="num">36</td><td class="num">₹4,32,000</td><td class="num">$5,140</td></tr>
+<tr class="total"><td>Total development</td><td></td><td class="num">90</td><td class="num">₹10,80,000</td><td class="num">$12,860</td></tr>
+</tbody></table></div>
+<div class="note">Each release can be approved on its own. Release 1.0 alone takes the game to both stores for ₹1.8 lakh. A 15% contingency applies to fixed-scope engagements.</div>
+
+<h3>One-time platform costs</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Item</th><th>Notes</th><th class="num">Cost</th></tr></thead>
+<tbody>
+<tr><td>Apple Developer Program</td><td>Annual; required for the App Store and TestFlight</td><td class="num">$99 / year ≈ ₹8,300</td></tr>
+<tr><td>Google Play Console</td><td>One-time registration</td><td class="num">$25 ≈ ₹2,100</td></tr>
+<tr><td>Domain name</td><td>Optional custom web address</td><td class="num">≈ ₹1,000 / year</td></tr>
+<tr><td>Sound library or composer</td><td>Included in release 1.0 days; media licence billed at cost</td><td class="num">₹8,000 – ₹40,000</td></tr>
+</tbody></table></div>
+
+<h2>3. Monthly investment after development</h2>
+<p>Infrastructure is priced at list rates for the services the game uses. Support is the retainer level appropriate to the audience size; it can be declined, in which case only the infrastructure line applies.</p>
+
+<div class="table-wrap"><table>
+<thead><tr><th>Line</th><th>0 – 500 monthly players</th><th>500 – 10,000 monthly players</th></tr></thead>
+<tbody>
+<tr><td>Web hosting and CDN</td><td>Free tier (Cloudflare Pages or GitHub Pages): ₹0</td><td>Free tier: ₹0</td></tr>
+<tr><td>Backend: accounts, cloud save, leaderboards</td><td>Free tier (Supabase): ₹0</td><td>Supabase Pro: ≈ ₹2,100</td></tr>
+<tr><td>Analytics</td><td>Free tier (PostHog or Firebase): ₹0</td><td>Free tier: ₹0</td></tr>
+<tr><td>Crash reporting</td><td>Free tier (Sentry): ₹0</td><td>Free tier: ₹0</td></tr>
+<tr><td>Push notifications</td><td>Free tier (Firebase or OneSignal): ₹0</td><td>Free tier: ₹0</td></tr>
+<tr><td>Remote configuration</td><td>Free (Firebase): ₹0</td><td>Free: ₹0</td></tr>
+<tr><td>Apple membership, monthly share</td><td>≈ ₹700</td><td>≈ ₹700</td></tr>
+<tr><td>Domain, monthly share</td><td>≈ ₹85</td><td>≈ ₹85</td></tr>
+<tr class="total"><td>Infrastructure per month</td><td>≈ ₹800 (≈ $10)</td><td>≈ ₹2,900 (≈ $35)</td></tr>
+<tr><td>Support retainer</td><td>Standby, 2 engineering days: ₹16,000</td><td>Rally, 4 engineering days: ₹32,000</td></tr>
+<tr class="total"><td>All-in per month</td><td>≈ ₹16,800 (≈ $200)</td><td>≈ ₹34,900 (≈ $415)</td></tr>
+</tbody></table></div>
+<ul class="tight">
+<li>Store commission of 15% applies to any in-app sales under both stores' small-business programmes; it is deducted from revenue, not billed.</li>
+<li>Rewarded ads, once enabled in release 1.2, typically cover the infrastructure line from a few thousand daily players onward.</li>
+<li>Above 10,000 monthly players the backend moves to a larger compute tier and analytics becomes usage-billed; a separate estimate is provided at that point.</li>
+</ul>
+
+<h2>4. Payment schedule</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Milestone</th><th>Trigger</th><th class="num">Amount</th></tr></thead>
+<tbody>
+<tr><td>Release 1.0 · Ship</td><td>50% on approval, 50% when both stores approve the app</td><td class="num">₹1,80,000</td></tr>
+<tr><td>Release 1.1</td><td>50% on approval, 50% on submission</td><td class="num">₹4,68,000</td></tr>
+<tr><td>Release 1.2</td><td>50% on approval, 50% on submission</td><td class="num">₹4,32,000</td></tr>
+<tr><td>Support retainer</td><td>Monthly in advance from go-live; three-month minimum</td><td class="num">₹16,000 or ₹32,000</td></tr>
+</tbody></table></div>
+
+<footer>Prices exclude taxes and third-party subscriptions billed at cost. Third-party list prices are current at the time of writing. Valid for 60 days.</footer>
+</div>

@@ -1,0 +1,152 @@
+<meta charset="utf-8">
+<title>Baseline Breaker Deliverables & Timeline</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@500;600;700&display=swap">
+<style>
+:root { --bg:#f6f5ef; --surface:#fff; --ink:#14201a; --muted:#5c6b62; --line:#dedccf; --accent:#1f6b5c; --accent-ink:#fff; --ball:#c9d824; --ball-ink:#1a2205; --clay:#c4572a; --chip:#eef0e4; --font-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif; --font-body:"Manrope","Helvetica Neue",Arial,sans-serif; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --chip:#1a2b22; } }
+:root[data-theme="dark"] { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --chip:#1a2b22; }
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
+.page{max-width:900px;margin:0 auto;padding:48px 24px 80px} header.hero{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:36px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--clay)}
+h1{font-family:var(--font-display);font-weight:900;font-size:clamp(44px,8vw,72px);line-height:.95;margin:8px 0 14px;text-transform:uppercase;text-wrap:balance} h1 .accent{color:var(--accent)}
+.lede{font-size:18px;color:var(--muted);max-width:62ch;margin:0}
+h2{font-family:var(--font-display);font-weight:900;font-size:34px;text-transform:uppercase;margin:44px 0 14px;line-height:1} h3{font-size:17px;font-weight:700;margin:26px 0 8px} p{max-width:70ch}
+.table-wrap{overflow-x:auto;margin:14px 0} table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top} th{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--chip)} tr:last-child td{border-bottom:0} td.num{white-space:nowrap;font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--chip);white-space:nowrap}
+.chip.done{background:var(--accent);color:var(--accent-ink)} .chip.next{background:var(--ball);color:var(--ball-ink)} .chip.later{background:var(--chip);color:var(--muted)} .chip.client{background:var(--clay);color:#fff}
+.phase{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+.phase .ph{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.phase .name{font-family:var(--font-display);font-weight:900;font-size:28px;text-transform:uppercase;line-height:1}
+.phase .when{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.phase ul{padding-left:18px;margin:10px 0 0;font-size:14.5px} .phase li{margin:4px 0}
+.gantt{display:grid;grid-template-columns:210px repeat(12,1fr);gap:4px 0;align-items:center;margin:16px 0;font-size:13px;min-width:720px}
+.gantt .head{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.gantt .lbl{padding:6px 10px 6px 0;font-weight:600} .gantt .bar{height:22px;border-radius:6px;background:var(--accent);opacity:.9}
+.gantt .bar.alt{background:var(--clay)} .gantt .bar.rev{background:var(--ball)} .gantt .bar.soft{background:var(--chip);border:1px dashed var(--line)}
+.note{border-left:3px solid var(--ball);padding:10px 16px;background:var(--surface);border-radius:0 12px 12px 0;margin:16px 0;color:var(--muted);font-size:14.5px}
+ul.tight{padding-left:20px;margin:8px 0} ul.tight li{margin:4px 0}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+</style>
+<div class="page">
+<header class="hero">
+  <div class="eyebrow">Deliverables &amp; timeline · Prepared by Zyphex Tech · September 2026</div>
+  <h1>Baseline Breaker <span class="accent">delivery plan</span></h1>
+  <p class="lede">Everything that will be delivered across web, Android and iOS, in the order it will arrive. Version 1.0 is complete today; the roadmap releases follow on a twelve-week plan gated only by store review and by accounts that must be opened in the client's name.</p>
+</header>
+
+<h2>1. Delivered today · Version 1.0</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Deliverable</th><th>Contents</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>Web application</b></td><td>Live public build, desktop and mobile browsers, HTTPS, offline-capable assets.</td><td><span class="chip done">Live</span></td></tr>
+<tr><td>2</td><td><b>Android application</b></td><td>Signed release bundle for Google Play plus a test APK. Portrait, full-screen, adaptive icon and splash.</td><td><span class="chip done">Built</span></td></tr>
+<tr><td>3</td><td><b>iOS application</b></td><td>Xcode project ready to archive for App Store Connect and TestFlight; icon set, launch screen, portrait lock.</td><td><span class="chip done">Built</span></td></tr>
+<tr><td>4</td><td><b>Source code</b></td><td>Full repository with history: engine, 3D renderer, 30 courts, native wrappers, build scripts. Transferable.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>5</td><td><b>Signing and release keys</b></td><td>Android upload keystore and credentials, handed over privately; Play App Signing guidance.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>6</td><td><b>Brand asset pack</b></td><td>Icon master and all sizes, splash screens, palette and type specification, favicon.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>7</td><td><b>Technical documentation</b></td><td>Setup, controls, scoring, level format, build commands for all platforms, debug hooks.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>8</td><td><b>Store submission kit</b></td><td>Play and App Store step-by-step, listing copy, screenshot specs, questionnaire answers, privacy-policy template.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>9</td><td><b>QA report</b></td><td>Environments, 42 test cases, defects fixed, known limitations.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>10</td><td><b>Feature roadmap</b></td><td>27 features across gameplay, progression, social, brand and platform, sized and prioritised.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>11</td><td><b>Support and maintenance proposal</b></td><td>Three retainer levels with scope, response times and first-90-days plan.</td><td><span class="chip done">Ready</span></td></tr>
+</tbody></table></div>
+
+<h2>2. Roadmap deliverables by release</h2>
+
+<div class="phase">
+  <div class="ph"><span class="name">Release 1.0 · Ship</span><span class="when">Weeks 1–4</span></div>
+  <ul>
+    <li>Real-device QA on six phones and a tablet; performance tiers tuned from measurements; 30 fps fallback.</li>
+    <li>Recorded sound set and short theme replacing the synthesised effects.</li>
+    <li>Analytics and crash reporting live (privacy labels updated accordingly).</li>
+    <li>Store listings, screenshots in every required size, privacy policy hosted.</li>
+    <li>Google Play internal test, closed test if required, production rollout. App Store TestFlight and review.</li>
+    <li><b>Outcome:</b> Baseline Breaker live on the web, Google Play and the App Store.</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <div class="ph"><span class="name">Release 1.1 · Play every day</span><span class="when">Weeks 4–8</span></div>
+  <ul>
+    <li>Player accounts with Apple, Google and email sign-in; cloud save across web and phone.</li>
+    <li>Global, weekly and friends leaderboards with server-side validation.</li>
+    <li>Daily challenge: one court for everyone each day with its own board and streaks.</li>
+    <li>Endless rally mode and three difficulty settings.</li>
+    <li>Unlockable cosmetics: three courts, five balls, five paddles, three trails.</li>
+    <li>Achievements with Game Center and Play Games; push notifications; share cards.</li>
+    <li>Client branding system: boards, banners, ball, paddle, icon and name from one theme file.</li>
+    <li>Installable web app with full offline play; localisation framework with five languages; accessibility pass; onboarding hint.</li>
+    <li>Automated tests and continuous integration building all three targets.</li>
+    <li><b>Outcome:</b> a reason to return daily, a measurable funnel, and the brand on the court.</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <div class="ph"><span class="name">Release 1.2 · Grow</span><span class="when">Weeks 8–12</span></div>
+  <ul>
+    <li>Rewarded ads (opt-in only) and cosmetic purchases through App Store, Play Billing and web checkout.</li>
+    <li>Seasonal events and remote configuration: themed courts and rewards switched on without an app update.</li>
+    <li>Tournaments: scheduled brackets, fixed courts, prize hooks, sponsor boards.</li>
+    <li>Four new boosts and six boss courts; level editor with shareable court codes.</li>
+    <li>Ghost rally: replay a friend's best run beside your own.</li>
+    <li><b>Outcome:</b> revenue options and event marketing built into the product.</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <div class="ph"><span class="name">Later · On demand</span><span class="when">After an audience exists</span></div>
+  <ul>
+    <li>Live head-to-head multiplayer with a real-time server.</li>
+    <li>Controller support and Apple TV / Android TV builds.</li>
+  </ul>
+</div>
+
+<h2>3. Timeline</h2>
+<div class="table-wrap">
+<div class="gantt">
+  <div class="head" style="text-align:left">Workstream</div>
+  <div class="head">W1</div><div class="head">W2</div><div class="head">W3</div><div class="head">W4</div><div class="head">W5</div><div class="head">W6</div><div class="head">W7</div><div class="head">W8</div><div class="head">W9</div><div class="head">W10</div><div class="head">W11</div><div class="head">W12</div>
+  <div class="lbl">Client: store accounts, D-U-N-S</div><div class="bar soft" style="grid-column:2/span 2"></div>
+  <div class="lbl">Device QA, performance, sound</div><div class="bar" style="grid-column:2/span 2"></div>
+  <div class="lbl">Analytics, listings, screenshots</div><div class="bar" style="grid-column:3/span 1"></div>
+  <div class="lbl">Store submission and review</div><div class="bar rev" style="grid-column:4/span 1"></div>
+  <div class="lbl">1.0 live</div><div class="bar rev" style="grid-column:5/span 1;opacity:.5"></div>
+  <div class="lbl">Accounts, cloud save, backend</div><div class="bar alt" style="grid-column:4/span 2"></div>
+  <div class="lbl">Leaderboards, daily, endless</div><div class="bar alt" style="grid-column:6/span 2"></div>
+  <div class="lbl">Cosmetics, achievements, push, share</div><div class="bar alt" style="grid-column:7/span 2"></div>
+  <div class="lbl">Branding, offline, languages, tests</div><div class="bar alt" style="grid-column:8/span 1"></div>
+  <div class="lbl">1.1 submission</div><div class="bar rev" style="grid-column:9/span 1"></div>
+  <div class="lbl">Monetisation, events, tournaments</div><div class="bar" style="grid-column:9/span 3"></div>
+  <div class="lbl">New content, editor, ghost rally</div><div class="bar" style="grid-column:11/span 2"></div>
+  <div class="lbl">1.2 submission</div><div class="bar rev" style="grid-column:13/span 1"></div>
+</div>
+</div>
+
+<div class="table-wrap"><table>
+<thead><tr><th>Milestone</th><th>Target</th><th>Depends on</th></tr></thead>
+<tbody>
+<tr><td>Kick-off; client opens Apple and Google developer accounts</td><td class="num">Week 1, day 1</td><td>Apple company verification can take two weeks, so this starts first.</td></tr>
+<tr><td>Real-device QA complete</td><td class="num">End of week 2</td><td>Client or Zyphex testers with four to six phones.</td></tr>
+<tr><td>Builds submitted to both stores</td><td class="num">End of week 3</td><td>Accounts approved, final screenshots.</td></tr>
+<tr><td><b>Release 1.0 live</b></td><td class="num">Week 4–5</td><td>Apple review 1–3 days per round; Google 3–7 days; personal Play accounts add a 14-day closed test.</td></tr>
+<tr><td>Backend and accounts live in test</td><td class="num">Week 5</td><td>Backend, push and analytics projects created in the client's name.</td></tr>
+<tr><td><b>Release 1.1 submitted</b></td><td class="num">Week 8–9</td><td>Data from 1.0 reviewed; branding theme approved.</td></tr>
+<tr><td><b>Release 1.2 submitted</b></td><td class="num">Week 12–13</td><td>Ad and billing approvals in both stores; event calendar agreed.</td></tr>
+</tbody></table></div>
+
+<h2>4. What we need from the client</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Item</th><th>Needed by</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Apple Developer Program membership and Google Play Console account</td><td class="num">Week 1</td><td>Listings, reviews and revenue must be owned by the client.</td></tr>
+<tr><td>Final app name, bundle identifier, privacy contact</td><td class="num">Week 1</td><td>Baked into the builds; cannot change after first upload.</td></tr>
+<tr><td>Brand assets and approval of the branding theme</td><td class="num">Week 6</td><td>For release 1.1's branded court and icon.</td></tr>
+<tr><td>Backend, analytics, push and ad accounts (created with our guidance)</td><td class="num">Week 4</td><td>Release 1.1 and 1.2 features run on services in the client's name.</td></tr>
+<tr><td>Testers with real phones</td><td class="num">Week 2</td><td>Touch feel and frame rate can only be judged on hardware.</td></tr>
+</tbody></table></div>
+
+<div class="note">Everything in release 1.0 that does not depend on store accounts is engineered and verified already. If the client accounts are opened on day one, week 4 is a realistic go-live.</div>
+
+<footer>Baseline Breaker is an original title by Zyphex Tech. Dates are working targets from kick-off and assume the client inputs above arrive on time.</footer>
+</div>
