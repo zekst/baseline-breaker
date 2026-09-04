@@ -1,0 +1,175 @@
+<title>Baseline Breaker Delivery Pack</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@500;600;700&display=swap">
+<style>
+:root {
+  --bg: #f6f5ef; --surface: #ffffff; --ink: #14201a; --muted: #5c6b62; --line: #dedccf;
+  --accent: #1f6b5c; --accent-ink: #ffffff; --ball: #c9d824; --ball-ink: #1a2205; --clay: #c4572a;
+  --chip: #eef0e4; --font-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif; --font-body: "Manrope", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0b1510; --surface: #122019; --ink: #ece8d6; --muted: #a9b5a3; --line: #23352c; --accent: #5cc8a8; --accent-ink: #061109; --ball: #dcef3f; --ball-ink: #1a2205; --clay: #e8865a; --chip: #1a2b22; } }
+:root[data-theme="dark"] { --bg: #0b1510; --surface: #122019; --ink: #ece8d6; --muted: #a9b5a3; --line: #23352c; --accent: #5cc8a8; --accent-ink: #061109; --ball: #dcef3f; --ball-ink: #1a2205; --clay: #e8865a; --chip: #1a2b22; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
+.page { max-width: 880px; margin: 0 auto; padding: 48px 24px 80px; }
+header.hero { border-bottom: 1px solid var(--line); padding-bottom: 28px; margin-bottom: 36px; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--clay); }
+h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(44px, 8vw, 76px); line-height: .95; margin: 8px 0 14px; text-transform: uppercase; text-wrap: balance; }
+h1 .accent { color: var(--accent); }
+.lede { font-size: 18px; color: var(--muted); max-width: 62ch; margin: 0; }
+.meta { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; font-size: 13px; color: var(--muted); }
+.meta b { color: var(--ink); font-weight: 700; }
+h2 { font-family: var(--font-display); font-weight: 900; font-size: 34px; text-transform: uppercase; letter-spacing: .01em; margin: 44px 0 14px; line-height: 1; }
+h3 { font-size: 17px; font-weight: 700; margin: 26px 0 8px; }
+p { max-width: 70ch; }
+a { color: var(--accent); }
+.links { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0 6px; }
+.link-card { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; text-decoration: none; color: inherit; }
+.link-card:hover { border-color: var(--accent); }
+.link-card .k { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.link-card .v { display: block; font-weight: 700; margin-top: 4px; word-break: break-all; }
+.link-card .n { display: block; font-size: 13px; color: var(--muted); margin-top: 4px; }
+table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; font-size: 14.5px; }
+.table-wrap { overflow-x: auto; margin: 14px 0; }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); background: var(--chip); }
+tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.chip { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--chip); color: var(--ink); white-space: nowrap; }
+.chip.s { background: var(--ball); color: var(--ball-ink); }
+.chip.m { background: var(--accent); color: var(--accent-ink); }
+.chip.l { background: var(--clay); color: #fff; }
+.chip.done { background: var(--accent); color: var(--accent-ink); }
+ul.tight { padding-left: 20px; margin: 8px 0; } ul.tight li { margin: 4px 0; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 14px 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+.card h3 { margin-top: 0; }
+.card .count { font-family: var(--font-display); font-weight: 900; font-size: 40px; line-height: 1; color: var(--accent); }
+.note { border-left: 3px solid var(--ball); padding: 10px 16px; background: var(--surface); border-radius: 0 12px 12px 0; margin: 16px 0; color: var(--muted); font-size: 14.5px; }
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+@media print { .page { padding: 0; } .link-card, .card, table { break-inside: avoid; } }
+</style>
+
+<div class="page">
+<header class="hero">
+  <div class="eyebrow">Delivery pack · Prepared by Zyphex Tech</div>
+  <h1>Baseline <span class="accent">Breaker</span></h1>
+  <p class="lede">A 3D tennis brick-breaker delivered on three platforms from one codebase: web, Android and iOS. This pack lists everything included in the handover and the roadmap of features that can be built on top of it.</p>
+  <div class="meta"><span><b>Version</b> 1.0</span><span><b>Platforms</b> Web · Android · iOS</span><span><b>Stack</b> HTML5 / three.js / Capacitor</span><span><b>Date</b> September 2026</span></div>
+</header>
+
+<h2>1. What you are receiving</h2>
+<p>Every item below is complete and has been verified running. Store publication itself happens under your developer accounts and is covered in section 3.</p>
+
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Deliverable</th><th>What it contains</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>Web application</b></td><td>Live, publicly playable build with no login. Works on desktop and mobile browsers, installs offline-ready assets, HTTPS.</td><td><span class="chip done">Live</span></td></tr>
+<tr><td>2</td><td><b>Android application</b></td><td>Signed release bundle (<code>.aab</code>) ready for Google Play, plus a debug <code>.apk</code> for direct install and testing. Portrait, full-screen immersive, dark system bars, adaptive icon and splash.</td><td><span class="chip done">Built</span></td></tr>
+<tr><td>3</td><td><b>iOS application</b></td><td>Xcode project building cleanly for iPhone and iPad, with app icon set, launch screen, portrait lock and hidden status bar. Ready to archive and upload to App Store Connect / TestFlight.</td><td><span class="chip done">Built</span></td></tr>
+<tr><td>4</td><td><b>Source code</b></td><td>Full repository with commit history: game engine, 3D renderer, 30 level layouts, native wrappers, build scripts. Transferable to your organisation's GitHub.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>5</td><td><b>Signing &amp; release keys</b></td><td>Android upload keystore and its credentials, handed over privately (not in the repository). Guidance on Play App Signing enrolment.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>6</td><td><b>Brand asset pack</b></td><td>App icon (1024 px master + all platform sizes), splash screens (light/dark), colour palette and type specification, favicon.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>7</td><td><b>Technical documentation</b></td><td>README covering setup, controls, scoring rules, level data format, build commands for all three platforms, and the debug hooks used for automated testing.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>8</td><td><b>Store submission kit</b></td><td>Step-by-step Google Play and App Store checklists, screenshot size requirements, listing copy template (title, short and long description), content-rating and data-safety answers, privacy-policy template.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>9</td><td><b>QA report</b></td><td>Verified device matrix (desktop browsers, Android 16 emulator, iPhone 17 Pro simulator), automated simulation runs of the full game loop, known limitations.</td><td><span class="chip done">Ready</span></td></tr>
+<tr><td>10</td><td><b>Feature roadmap</b></td><td>Section 4 of this document: prioritised features with value and complexity, so the next phase can be scoped quickly.</td><td><span class="chip done">This doc</span></td></tr>
+<tr><td>11</td><td><b>Support &amp; maintenance proposal</b></td><td>Optional retainer for store updates, OS compatibility, analytics review and feature work. Supplied separately.</td><td><span class="chip">Optional</span></td></tr>
+</tbody></table></div>
+
+<div class="links">
+  <a class="link-card" href="https://zekst.github.io/baseline-breaker/"><span class="k">Web build</span><span class="v">zekst.github.io/baseline-breaker</span><span class="n">Playable now, share freely</span></a>
+  <a class="link-card" href="https://github.com/zekst/baseline-breaker"><span class="k">Source repository</span><span class="v">github.com/zekst/baseline-breaker</span><span class="n">Transfer on acceptance</span></a>
+</div>
+
+<h2>2. What the game does today</h2>
+<div class="grid2">
+  <div class="card"><div class="count">30</div><h3>Hand-built courts</h3><p>Levels pooled by difficulty and dealt in a fresh order each run, so no two sessions play the same. Multi-hit bricks stack visibly; unbreakable bricks only fall to Smash or Power Shot.</p></div>
+  <div class="card"><div class="count">6</div><h3>Boosts</h3><p>Defensive Wall, Multiball, Smash, Heavy Ball, Racket XL and Power Shot. A tutorial pass introduces each one in order, then a shuffled deck keeps drops unpredictable.</p></div>
+  <div class="card"><div class="count">3D</div><h3>Stadium presentation</h3><p>Clay court with chalk lines, tiered stands, sponsor boards, floodlights, real-time shadows, debris on every break, a glowing ball with a trail, and a camera that reacts to play.</p></div>
+  <div class="card"><div class="count">×4</div><h3>Combo scoring</h3><p>Bricks chained in one rally build a combo and raise the multiplier. Floating score popups, on-court calls ("Game!", "Out!"), personal-best tracking and a share button.</p></div>
+</div>
+<h3>Also included</h3>
+<ul class="tight">
+  <li>Controls tuned per device: mouse-follow on desktop, drag-anywhere with amplified travel on touch, keyboard support.</li>
+  <li>Haptic feedback on phones, synthesised sound effects with a mute toggle, screen kept awake during play.</li>
+  <li>Automatic quality tiers so the 3D scene stays smooth on mid-range phones.</li>
+  <li>Pause, resume with countdown, results screen, best-score persistence.</li>
+  <li>Accessible focus states, reduced-motion support, portrait guidance on phones.</li>
+</ul>
+
+<h2>3. Store publication</h2>
+<p>The builds are ready; publishing requires developer accounts in your name so that you own the listings, reviews and revenue.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Store</th><th>You provide</th><th>We do</th><th>Typical time to live</th></tr></thead>
+<tbody>
+<tr><td><b>Google Play</b></td><td>Google Play Console account (one-time registration fee), company details, privacy-policy URL.</td><td>Upload the signed bundle, complete listing, content rating and data-safety forms, run an internal test track, promote to production.</td><td class="num">3–7 days for first review</td></tr>
+<tr><td><b>Apple App Store</b></td><td>Apple Developer Program membership (annual), D-U-N-S number for a company account, privacy-policy URL.</td><td>Archive and upload from Xcode, TestFlight build for your team, App Store Connect listing, submit for review, respond to review notes.</td><td class="num">1–3 days per review round</td></tr>
+<tr><td><b>Web</b></td><td>Optional: your domain name.</td><td>Point the domain at the hosted build, enable HTTPS, add analytics if wanted.</td><td class="num">Same day</td></tr>
+</tbody></table></div>
+<div class="note">Screenshots for both stores are captured from the final builds once the listings exist; we supply them in every required size.</div>
+
+<h2>4. Feature roadmap</h2>
+<p>Features grouped by the goal they serve. Complexity is relative to the current codebase: <span class="chip s">S</span> days, <span class="chip m">M</span> one to two weeks, <span class="chip l">L</span> three weeks or more. Items marked <b>Recommended</b> are the highest value for the next release.</p>
+
+<h3>Gameplay depth</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Feature</th><th>What it adds</th><th>Player value</th><th>Size</th></tr></thead>
+<tbody>
+<tr><td><b>Daily challenge</b> · Recommended</td><td>One fixed court per day for everyone, with its own leaderboard.</td><td>A reason to return every day; the single strongest retention lever for casual games.</td><td><span class="chip m">M</span></td></tr>
+<tr><td><b>Endless rally mode</b></td><td>Courts scroll in continuously with rising speed; score until you drop.</td><td>Short, high-intensity sessions and a clean "how far can you get" hook.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Boss courts</b></td><td>Every fifth level is a moving or regenerating formation (a serving machine, a net that rebuilds).</td><td>Milestones and variety in the difficulty curve.</td><td><span class="chip m">M</span></td></tr>
+<tr><td><b>New boosts</b></td><td>Slice (curving ball), Freeze (slows bricks' drop timer), Magnet (ball sticks to paddle for an aimed shot), Ace (one-shot clear of a column).</td><td>More decisions per rally; each boost is a few days.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Difficulty settings</b></td><td>Relaxed, Standard, Pro: paddle width, ball speed ramp, lives.</td><td>Widens the audience without diluting the challenge.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Level editor &amp; sharing</b></td><td>In-app grid editor; courts shared by code or link.</td><td>Community-made content at zero content cost.</td><td><span class="chip l">L</span></td></tr>
+</tbody></table></div>
+
+<h3>Progression and rewards</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Feature</th><th>What it adds</th><th>Player value</th><th>Size</th></tr></thead>
+<tbody>
+<tr><td><b>Player accounts &amp; cloud save</b> · Recommended</td><td>Sign in with Apple, Google or email; progress synced across web and phone.</td><td>Foundation for every social and reward feature.</td><td><span class="chip m">M</span></td></tr>
+<tr><td><b>Unlockable cosmetics</b> · Recommended</td><td>Courts (grass, hard, indoor night), balls, paddles, trails; earned by milestones.</td><td>Visible progress and identity; natural fit for sponsors or in-app purchase.</td><td><span class="chip m">M</span></td></tr>
+<tr><td><b>Achievements</b></td><td>Fifty goals (first combo ×4, clear a set without losing a ball) with Game Center and Play Games integration.</td><td>Long-tail goals for engaged players.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Season pass</b></td><td>Time-boxed track of rewards tied to a theme (a tournament, a brand campaign).</td><td>Campaign-style engagement window; pairs with events.</td><td><span class="chip l">L</span></td></tr>
+</tbody></table></div>
+
+<h3>Social and competition</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Feature</th><th>What it adds</th><th>Player value</th><th>Size</th></tr></thead>
+<tbody>
+<tr><td><b>Global and friends leaderboards</b> · Recommended</td><td>All-time, weekly and daily boards; friends via contacts or codes.</td><td>Competition drives replays and sharing.</td><td><span class="chip m">M</span></td></tr>
+<tr><td><b>Share cards</b></td><td>Auto-generated image of the result (score, combo, court) for stories and chat.</td><td>Free acquisition through players' own networks.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Tournaments</b></td><td>Scheduled brackets with fixed courts and prizes; a sponsor's name on the boards.</td><td>Event marketing built into the product.</td><td><span class="chip l">L</span></td></tr>
+<tr><td><b>Ghost rally</b></td><td>Replay a friend's best run as a translucent paddle beside yours.</td><td>Asynchronous multiplayer with no server load during play.</td><td><span class="chip m">M</span></td></tr>
+<tr><td><b>Live head-to-head</b></td><td>Two players, mirrored courts, first to clear wins.</td><td>Headline feature for a later release; needs real-time infrastructure.</td><td><span class="chip l">L</span></td></tr>
+</tbody></table></div>
+
+<h3>Brand and monetisation</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Feature</th><th>What it adds</th><th>Player value</th><th>Size</th></tr></thead>
+<tbody>
+<tr><td><b>Client branding</b> · Recommended</td><td>Logo on court boards and floodlight banners, branded ball and paddle, colour theme, custom app name and icon.</td><td>Turns the game into a campaign asset.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Seasonal events</b></td><td>Themed courts and rewards for tournaments or holidays, switched on remotely.</td><td>Fresh content without an app update.</td><td><span class="chip m">M</span></td></tr>
+<tr><td><b>Rewarded ads</b></td><td>Watch an ad for an extra life or a boost; never interruptive.</td><td>Revenue that players opt into.</td><td><span class="chip m">M</span></td></tr>
+<tr><td><b>Cosmetic purchases</b></td><td>Paid courts and trails through App Store and Play billing; web via Stripe.</td><td>Direct revenue with no effect on fairness.</td><td><span class="chip m">M</span></td></tr>
+<tr><td><b>Prize draws &amp; coupons</b></td><td>Score thresholds unlock codes redeemable with the brand.</td><td>Direct line from play to purchase.</td><td><span class="chip s">S</span></td></tr>
+</tbody></table></div>
+
+<h3>Platform and quality</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Feature</th><th>What it adds</th><th>Player value</th><th>Size</th></tr></thead>
+<tbody>
+<tr><td><b>Analytics &amp; crash reporting</b> · Recommended</td><td>Funnel from open to first clear, retention, level difficulty heatmap, crash-free rate.</td><td>Decisions based on data rather than guesses.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Push notifications</b></td><td>Daily challenge reminder, "your record was beaten", event start.</td><td>Brings lapsed players back.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Localisation</b></td><td>Text externalised; first pass in five languages.</td><td>Required for regional store featuring.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Installable web app (PWA)</b></td><td>Add-to-home-screen, full offline play, app-like launch on the web.</td><td>App feel without a store install.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Original music &amp; sound design</b></td><td>Composed theme, crowd ambience, layered hit sounds.</td><td>Big lift in perceived quality for modest cost.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Accessibility pass</b></td><td>Colour-blind brick palettes, larger-paddle assist, screen-reader labels on menus.</td><td>Broader audience and store review goodwill.</td><td><span class="chip s">S</span></td></tr>
+<tr><td><b>Controller and TV</b></td><td>Gamepad support; Apple TV and Android TV targets.</td><td>Living-room play for events and showrooms.</td><td><span class="chip m">M</span></td></tr>
+</tbody></table></div>
+
+<h2>5. Suggested next release</h2>
+<p>If one phase is approved, the highest-return bundle is: <b>accounts and cloud save</b>, <b>daily challenge</b>, <b>leaderboards</b>, <b>unlockable cosmetics</b>, <b>client branding</b>, and <b>analytics</b>. Together they turn a one-off play into a habit and give the brand a measurable channel. Scoping and pricing for that bundle are provided on request.</p>
+
+<footer>Baseline Breaker is an original title. It is not affiliated with or endorsed by any tennis federation, tournament or apparel brand. All artwork, code and level designs are original works delivered under the project agreement.</footer>
+</div>
