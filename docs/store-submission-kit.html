@@ -1,0 +1,144 @@
+<meta charset="utf-8">
+<title>Baseline Breaker Store Submission Kit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@500;600;700&display=swap">
+<style>
+:root { --bg:#f6f5ef; --surface:#fff; --ink:#14201a; --muted:#5c6b62; --line:#dedccf; --accent:#1f6b5c; --accent-ink:#fff; --ball:#c9d824; --ball-ink:#1a2205; --clay:#c4572a; --chip:#eef0e4; --font-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif; --font-body:"Manrope","Helvetica Neue",Arial,sans-serif; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --chip:#1a2b22; } }
+:root[data-theme="dark"] { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --chip:#1a2b22; }
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
+.page{max-width:880px;margin:0 auto;padding:48px 24px 80px} header.hero{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:36px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--clay)}
+h1{font-family:var(--font-display);font-weight:900;font-size:clamp(44px,8vw,72px);line-height:.95;margin:8px 0 14px;text-transform:uppercase;text-wrap:balance} h1 .accent{color:var(--accent)}
+.lede{font-size:18px;color:var(--muted);max-width:62ch;margin:0}
+h2{font-family:var(--font-display);font-weight:900;font-size:34px;text-transform:uppercase;margin:44px 0 14px;line-height:1} h3{font-size:17px;font-weight:700;margin:26px 0 8px} p{max-width:70ch}
+.table-wrap{overflow-x:auto;margin:14px 0} table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top} th{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--chip)} tr:last-child td{border-bottom:0}
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:14px 0} ol.steps li{position:relative;padding:12px 16px 12px 58px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin:8px 0}
+ol.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:14px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--ball);color:var(--ball-ink);font-family:var(--font-display);font-weight:900;font-size:18px;display:grid;place-items:center}
+.copy{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;white-space:pre-wrap;font-size:14.5px}
+.copy b{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.note{border-left:3px solid var(--ball);padding:10px 16px;background:var(--surface);border-radius:0 12px 12px 0;margin:16px 0;color:var(--muted);font-size:14.5px}
+ul.tight{padding-left:20px;margin:8px 0} ul.tight li{margin:4px 0} code{background:var(--chip);padding:1px 6px;border-radius:6px;font-size:13px}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+</style>
+<div class="page">
+<header class="hero">
+  <div class="eyebrow">Store submission kit</div>
+  <h1>Publishing <span class="accent">Baseline Breaker</span></h1>
+  <p class="lede">Everything needed to take the finished builds through Google Play and the App Store: account prerequisites, step-by-step submission, listing copy, screenshot specifications, the answers to both stores' questionnaires, and a privacy-policy template.</p>
+</header>
+
+<h2>1. Before you start</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Prerequisite</th><th>Google Play</th><th>Apple App Store</th></tr></thead>
+<tbody>
+<tr><td>Developer account</td><td>Google Play Console, one-time registration fee. An <b>organisation</b> account (needs a D-U-N-S number and a verified business address) skips the 14-day closed-test requirement that applies to new personal accounts.</td><td>Apple Developer Program, annual membership. A company enrolment needs a D-U-N-S number, a legal entity, and a person with authority to sign; verification takes up to two weeks.</td></tr>
+<tr><td>Identity</td><td>Government ID and a payment profile.</td><td>Apple ID with two-factor authentication.</td></tr>
+<tr><td>Privacy policy URL</td><td>Required even for apps that collect nothing. Host the template in section 6 on the web build's domain.</td><td>Same URL.</td></tr>
+<tr><td>App identity</td><td>Package name <code>com.zekst.baselinebreaker</code> (change to the client's domain before first upload; it cannot be changed after).</td><td>Bundle ID <code>com.zekst.baselinebreaker</code>, same rule.</td></tr>
+<tr><td>Team access</td><td>Invite Zyphex Tech as a Release Manager on the Console.</td><td>Invite Zyphex Tech as App Manager in App Store Connect and Developer in the developer account.</td></tr>
+</tbody></table></div>
+<div class="note">If the app ships under the client's brand, decide the final app name and bundle identifier now. Both are baked into the builds and the Android upload key is tied to the package name.</div>
+
+<h2>2. Google Play, step by step</h2>
+<ol class="steps">
+<li><b>Create the app</b> in Play Console: name Baseline Breaker, default language English (UK or US), app (not game category yet), free.</li>
+<li><b>Set up Play App Signing.</b> Choose "Use Google-generated key" for the app-signing key and upload our <code>upload-keystore.jks</code> certificate as the upload key. Google then holds the signing key and we keep the upload key; losing the upload key is recoverable, losing an unmanaged signing key is not.</li>
+<li><b>Complete the dashboard tasks</b>: privacy policy URL, app access (no login required), ads declaration (no ads in 1.0), content rating questionnaire (section 5), target audience (13+; do not target children), news app (no), COVID app (no), data safety (section 5), government app (no), financial features (none).</li>
+<li><b>Store listing</b>: paste copy from section 4, upload the icon (512 px), feature graphic (1024 × 500), phone screenshots (at least four), and 7-inch and 10-inch tablet screenshots if tablet support is claimed. Category: Games › Arcade.</li>
+<li><b>Upload the bundle</b> <code>android/app/build/outputs/bundle/release/app-release.aab</code> to <b>Internal testing</b>, add tester emails, and install from the opt-in link on at least two real devices.</li>
+<li><b>Closed testing</b> (personal accounts only): 12 testers opted in for 14 continuous days, then apply for production access.</li>
+<li><b>Promote to Production</b> with a staged rollout at 20%, watch crash rate and reviews for 48 hours, then 100%.</li>
+<li><b>Review</b> normally completes in 3–7 days for a new app. Common rejections: missing privacy policy, wrong content rating, screenshots showing a different UI. Each is a same-day fix.</li>
+</ol>
+
+<h2>3. App Store, step by step</h2>
+<ol class="steps">
+<li><b>Register the bundle ID</b> in Certificates, Identifiers &amp; Profiles, capabilities: none required for 1.0 (Game Center is added in 1.1).</li>
+<li><b>Create the app record</b> in App Store Connect: name, primary language, bundle ID, SKU (any unique string), user access.</li>
+<li><b>Open the Xcode project</b> <code>ios/App/App.xcodeproj</code>, select the App target, set the Team under Signing &amp; Capabilities, confirm version 1.0 and build 1.</li>
+<li><b>Archive</b> (Product › Archive) with "Any iOS Device" selected, then Distribute App › App Store Connect › Upload. Xcode manages certificates and profiles automatically.</li>
+<li><b>TestFlight</b>: once processing finishes (10–30 minutes), add internal testers (up to 100, no review) and test on at least an older iPhone and a current one. External testers need a brief beta review.</li>
+<li><b>App information</b>: category Games › Arcade, secondary Sports; age rating from the questionnaire (section 5, results in 4+); content rights declaration (no third-party content).</li>
+<li><b>App Privacy</b>: answer "Data not collected" for 1.0. This changes in 1.1 when accounts and analytics arrive.</li>
+<li><b>Version page</b>: screenshots for 6.9-inch and 6.5-inch iPhone and 13-inch iPad (section 4), promotional text, description, keywords, support URL, marketing URL (the web build), the uploaded build, and review notes: "No login required. Drag to move the paddle."</li>
+<li><b>Submit for review.</b> Typical turnaround 24–72 hours. Guideline 4.2 (minimum functionality) is the only realistic risk for a web-technology game; the native splash, haptics, full-screen presentation and offline play address it. If it is raised, reply pointing to those and to the 3D rendering.</li>
+</ol>
+
+<h2>4. Listing copy and screenshot specification</h2>
+<div class="copy"><b>App name (30 characters max)</b>Baseline Breaker</div>
+<div class="copy"><b>Subtitle / short description (30 / 80 characters)</b>3D tennis brick-breaker · Three lives, six boosts, thirty courts. Break every brick.</div>
+<div class="copy"><b>Description</b>Step onto the clay. Baseline Breaker is a brick-breaker played from behind the baseline of a floodlit stadium: thirty hand-built courts, a paddle that answers the moment you move, and a ball with real weight.
+
+Clear every brick to win the game. Lose the ball past the baseline and you lose a life. Three lives, no second serve.
+
+SIX BOOSTS
+Defensive Wall turns the baseline solid. Multiball puts a second ball in play. Smash fires shots that break any brick, even the unbreakable ones. Heavy Ball doubles the ball and the points. Racket XL widens your paddle. Power Shot burns straight through the wall.
+
+CHAIN COMBOS
+Bricks broken in one rally build a combo. Every three raise the multiplier up to ×4. Chase a personal best and share it in one tap.
+
+MADE TO FEEL RIGHT
+Drag anywhere to move. Haptic feedback on every hit. Debris, shadows and a camera that reacts to play. Runs smoothly on any recent phone and works offline.
+
+Free to play. No ads, no sign-up.</div>
+<div class="copy"><b>Keywords (App Store, 100 characters)</b>brick breaker,tennis,arcade,breakout,ball,paddle,3d,offline,casual,combo</div>
+<div class="copy"><b>What's new (1.0)</b>First serve. Thirty courts, six boosts, combo scoring, full 3D stadium.</div>
+
+<h3>Screenshots</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Store</th><th>Required sizes</th><th>Count</th></tr></thead>
+<tbody>
+<tr><td>Google Play phone</td><td>1080 × 1920 or 1080 × 2400 PNG or JPEG, 16:9 to 9:16</td><td>4 to 8</td></tr>
+<tr><td>Google Play tablet</td><td>7-inch: 1200 × 1920; 10-inch: 1600 × 2560</td><td>2 to 8 each if tablets are supported</td></tr>
+<tr><td>Google Play feature graphic</td><td>1024 × 500, no transparency</td><td>1</td></tr>
+<tr><td>App Store iPhone</td><td>6.9-inch: 1320 × 2868; 6.5-inch: 1284 × 2778 (or 1242 × 2688)</td><td>3 to 10 each</td></tr>
+<tr><td>App Store iPad</td><td>13-inch: 2064 × 2752</td><td>3 to 10</td></tr>
+</tbody></table></div>
+<p>Suggested sequence: 1) mid-rally with a combo popup, 2) the six boosts intro, 3) Smash firing at unbreakable bricks, 4) "Game!" clear banner, 5) results with New Best badge. Add a one-line caption on each in the display face.</p>
+
+<h2>5. Questionnaire answers</h2>
+<h3>Google Play content rating (IARC)</h3>
+<ul class="tight">
+<li>Category: Game. Violence: none. Sexuality: none. Language: none. Controlled substances: none. Gambling: none, no simulated gambling.</li>
+<li>User interaction: none in 1.0 (no chat, no user-generated content, no sharing of location). Digital purchases: none. Result: Everyone / PEGI 3.</li>
+</ul>
+<h3>Google Play data safety</h3>
+<ul class="tight">
+<li>Does the app collect or share user data: <b>No</b>. Best score is stored on the device only. No analytics SDK in 1.0.</li>
+<li>Data encrypted in transit: not applicable. Data deletion: not applicable. Update these when 1.1 adds accounts and analytics.</li>
+</ul>
+<h3>App Store age rating</h3>
+<ul class="tight">
+<li>All content descriptors: None. Unrestricted web access: No. Gambling and contests: No. Result: 4+.</li>
+</ul>
+<h3>App Store privacy nutrition label</h3>
+<ul class="tight"><li>Data not collected.</li></ul>
+
+<h2>6. Privacy policy template</h2>
+<div class="copy"><b>Privacy policy · Baseline Breaker · effective [date]</b>[Company name] ("we") publishes the Baseline Breaker game for web, Android and iOS.
+
+What we collect. The game does not require an account and does not collect personal data. Your best score and settings are stored only on your device. If you use the Share button, the text you share goes only to the app or contact you choose.
+
+Third parties. The web version loads fonts from Google Fonts, which may record your IP address as part of serving the file. No advertising or analytics services are used.
+
+Children. The game is suitable for all ages and does not knowingly collect information from anyone.
+
+Changes. If a future version adds accounts, leaderboards or analytics, this policy will be updated before that version is released, and the app will ask for consent where the law requires it.
+
+Contact. [email address] · [postal address]</div>
+
+<h2>7. Handover checklist</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Item</th><th>Where</th><th>Owner</th></tr></thead>
+<tbody>
+<tr><td>Upload keystore and passwords</td><td>Shared privately via password manager; never in email or the repository</td><td>Zyphex → client</td></tr>
+<tr><td>Play App Signing enrolment</td><td>Play Console › Setup › App signing</td><td>Client, guided by Zyphex</td></tr>
+<tr><td>Apple certificates</td><td>Managed by Xcode under the client's team; Zyphex holds no private keys</td><td>Client</td></tr>
+<tr><td>Bundle and package identifier change</td><td><code>capacitor.config.json</code>, then <code>npx cap sync</code></td><td>Zyphex, before first upload</td></tr>
+<tr><td>Privacy policy hosted</td><td>Web build domain, <code>/privacy</code></td><td>Zyphex</td></tr>
+<tr><td>Screenshots captured from final builds</td><td>Emulator, simulator and two real devices</td><td>Zyphex</td></tr>
+</tbody></table></div>
+
+<footer>Store requirements change several times a year. Sizes, fees and review times above are correct at the time of writing; recheck the Play Console and App Store Connect help pages before each submission.</footer>
+</div>

@@ -1,0 +1,96 @@
+<meta charset="utf-8">
+<title>Baseline Breaker Support Proposal</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@500;600;700&display=swap">
+<style>
+:root { --bg:#f6f5ef; --surface:#fff; --ink:#14201a; --muted:#5c6b62; --line:#dedccf; --accent:#1f6b5c; --accent-ink:#fff; --ball:#c9d824; --ball-ink:#1a2205; --clay:#c4572a; --chip:#eef0e4; --font-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif; --font-body:"Manrope","Helvetica Neue",Arial,sans-serif; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --chip:#1a2b22; } }
+:root[data-theme="dark"] { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --chip:#1a2b22; }
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
+.page{max-width:880px;margin:0 auto;padding:48px 24px 80px} header.hero{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:36px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--clay)}
+h1{font-family:var(--font-display);font-weight:900;font-size:clamp(44px,8vw,72px);line-height:.95;margin:8px 0 14px;text-transform:uppercase;text-wrap:balance} h1 .accent{color:var(--accent)}
+.lede{font-size:18px;color:var(--muted);max-width:62ch;margin:0}
+h2{font-family:var(--font-display);font-weight:900;font-size:34px;text-transform:uppercase;margin:44px 0 14px;line-height:1} h3{font-size:17px;font-weight:700;margin:26px 0 8px} p{max-width:70ch}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:18px 0}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 22px 18px;display:flex;flex-direction:column;gap:10px}
+.plan.featured{border-color:var(--accent);box-shadow:0 8px 30px rgba(31,107,92,.12)}
+.plan .name{font-family:var(--font-display);font-weight:900;font-size:30px;text-transform:uppercase;line-height:1}
+.plan .price{font-family:var(--font-display);font-weight:900;font-size:40px;color:var(--accent);line-height:1} .plan .price small{font-family:var(--font-body);font-size:13px;color:var(--muted);font-weight:600}
+.plan ul{padding-left:18px;margin:6px 0;font-size:14.5px} .plan li{margin:4px 0}
+.plan .for{font-size:13px;color:var(--muted)}
+.table-wrap{overflow-x:auto;margin:14px 0} table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top} th{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--chip)} tr:last-child td{border-bottom:0}
+.note{border-left:3px solid var(--ball);padding:10px 16px;background:var(--surface);border-radius:0 12px 12px 0;margin:16px 0;color:var(--muted);font-size:14.5px}
+ul.tight{padding-left:20px;margin:8px 0} ul.tight li{margin:4px 0}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+</style>
+<div class="page">
+<header class="hero">
+  <div class="eyebrow">Support &amp; maintenance proposal · Zyphex Tech</div>
+  <h1>Keeping <span class="accent">Baseline Breaker</span> in play</h1>
+  <p class="lede">A published game needs someone watching the stores, the operating systems and the numbers. This proposal sets out three retainer levels, what each covers, how requests are handled, and what is charged separately.</p>
+</header>
+
+<h2>1. Why a retainer</h2>
+<ul class="tight">
+<li><b>The stores move.</b> Apple and Google raise minimum SDK and policy requirements every year; an app that is not updated is eventually delisted.</li>
+<li><b>Operating systems move.</b> New iOS and Android releases each autumn change rendering, permissions and audio behaviour. We test on betas before release day.</li>
+<li><b>Players write reviews.</b> Prompt replies and fast fixes keep the rating up, and the rating drives installs.</li>
+<li><b>The game should keep improving.</b> A steady cadence of small updates keeps players returning and gives the brand something to announce.</li>
+</ul>
+
+<h2>2. Retainer levels</h2>
+<div class="plans">
+  <div class="plan">
+    <div class="name">Standby</div>
+    <div class="price">₹16,000 <small>/ month · 2 engineering days</small></div>
+    <div class="for">For a launched game with no active feature work.</div>
+    <ul><li>Store compliance updates and re-submissions</li><li>OS compatibility fixes</li><li>Bug fixes with 3-business-day response</li><li>Monthly health check: crash rate, ratings, downloads</li><li>Unused days roll over for one month</li></ul>
+  </div>
+  <div class="plan featured">
+    <div class="name">Rally</div>
+    <div class="price">₹32,000 <small>/ month · 4 engineering days</small></div>
+    <div class="for">Recommended once version 1.1 is live.</div>
+    <ul><li>Everything in Standby with 1-business-day response</li><li>Monthly content drop: a new court or event theme</li><li>Analytics review with a written recommendation</li><li>Review and support inbox replies within 24 hours</li><li>Backend, push and leaderboard monitoring</li><li>Quarterly roadmap session</li></ul>
+  </div>
+  <div class="plan">
+    <div class="name">Tournament</div>
+    <div class="price">₹64,000 <small>/ month · 8 engineering days</small></div>
+    <div class="for">For live events, monetisation and a growing audience.</div>
+    <ul><li>Everything in Rally with same-day response</li><li>Live-ops: events, tournaments, seasonal themes</li><li>Community moderation for shared courts</li><li>A/B tests on difficulty and rewards</li><li>Weekly metrics report</li><li>Named engineer and a monthly call</li></ul>
+  </div>
+</div>
+<div class="note">Rates use the same ₹8,000 per engineering day as the build phases. Days include design and QA time proportionally. Infrastructure subscriptions (backend, analytics, push) are billed at cost and listed in the internal cost plan.</div>
+
+<h2>3. What counts as support</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Included in the retainer</th><th>Quoted separately</th></tr></thead>
+<tbody>
+<tr><td>Fixing defects in delivered features</td><td>New features from the roadmap (fixed-scope quotes)</td></tr>
+<tr><td>Store policy, SDK and OS updates</td><td>New platforms (TV, desktop stores)</td></tr>
+<tr><td>Small tuning: difficulty, speed, drop rates, copy</td><td>Rebrands or full visual redesigns</td></tr>
+<tr><td>Content within existing systems: courts, themes, cosmetics</td><td>New systems: multiplayer, accounts, payments</td></tr>
+<tr><td>Monitoring and monthly reporting</td><td>Marketing assets, video trailers, paid campaigns</td></tr>
+<tr><td>Review and support replies</td><td>24/7 on-call (available at Tournament level as an add-on)</td></tr>
+</tbody></table></div>
+
+<h2>4. How it works</h2>
+<ul class="tight">
+<li><b>Requests</b> go to a shared board; each is acknowledged within the response time of the plan and given a size and a target release.</li>
+<li><b>Releases</b> ship on a fixed monthly date for Rally and Tournament, with hotfixes at any time for crashes or store issues.</li>
+<li><b>Severity.</b> Blocker (app unusable or delisted): work starts immediately. Major (a feature broken for many players): next business day. Minor: next scheduled release.</li>
+<li><b>Reporting.</b> A one-page monthly summary: downloads, active players, retention, crash-free rate, rating, work done, work planned.</li>
+<li><b>Term.</b> Three-month minimum, then monthly; 30 days' notice; level can change at any month boundary.</li>
+</ul>
+
+<h2>5. First 90 days</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Month</th><th>Focus</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Launch watch: daily crash and review checks, hotfixes, first analytics baseline.</td></tr>
+<tr><td>2</td><td>Tuning from data: difficulty curve, drop rates, onboarding drop-off; first content drop.</td></tr>
+<tr><td>3</td><td>Quarterly review: retention and rating trend, roadmap proposal for the next release.</td></tr>
+</tbody></table></div>
+
+<footer>Prices exclude taxes and third-party subscriptions. Valid for 60 days from the date of this proposal.</footer>
+</div>

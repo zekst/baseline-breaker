@@ -1,0 +1,143 @@
+<meta charset="utf-8">
+<title>Baseline Breaker QA Report</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@500;600;700&display=swap">
+<style>
+:root { --bg:#f6f5ef; --surface:#fff; --ink:#14201a; --muted:#5c6b62; --line:#dedccf; --accent:#1f6b5c; --accent-ink:#fff; --ball:#c9d824; --ball-ink:#1a2205; --clay:#c4572a; --warn:#b4321f; --chip:#eef0e4; --font-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif; --font-body:"Manrope","Helvetica Neue",Arial,sans-serif; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --warn:#ff7a66; --chip:#1a2b22; } }
+:root[data-theme="dark"] { --bg:#0b1510; --surface:#122019; --ink:#ece8d6; --muted:#a9b5a3; --line:#23352c; --accent:#5cc8a8; --accent-ink:#061109; --ball:#dcef3f; --clay:#e8865a; --warn:#ff7a66; --chip:#1a2b22; }
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
+.page{max-width:880px;margin:0 auto;padding:48px 24px 80px} header.hero{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:36px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--clay)}
+h1{font-family:var(--font-display);font-weight:900;font-size:clamp(44px,8vw,72px);line-height:.95;margin:8px 0 14px;text-transform:uppercase;text-wrap:balance} h1 .accent{color:var(--accent)}
+.lede{font-size:18px;color:var(--muted);max-width:62ch;margin:0}
+h2{font-family:var(--font-display);font-weight:900;font-size:34px;text-transform:uppercase;margin:44px 0 14px;line-height:1} h3{font-size:17px;font-weight:700;margin:26px 0 8px} p{max-width:70ch}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:18px 0}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px} .kpi .k{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)} .kpi .v{font-family:var(--font-display);font-weight:900;font-size:36px;line-height:1.05;margin-top:6px} .kpi .n{font-size:13px;color:var(--muted);margin-top:4px}
+.table-wrap{overflow-x:auto;margin:14px 0} table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top} th{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--chip)} tr:last-child td{border-bottom:0}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--chip);white-space:nowrap}
+.chip.pass{background:var(--accent);color:var(--accent-ink)} .chip.open{background:var(--clay);color:#fff} .chip.na{background:var(--chip);color:var(--muted)} .chip.fixed{background:var(--ball);color:var(--ball-ink)}
+.note{border-left:3px solid var(--ball);padding:10px 16px;background:var(--surface);border-radius:0 12px 12px 0;margin:16px 0;color:var(--muted);font-size:14.5px}
+ul.tight{padding-left:20px;margin:8px 0} ul.tight li{margin:4px 0} code{background:var(--chip);padding:1px 6px;border-radius:6px;font-size:13px}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+</style>
+<div class="page">
+<header class="hero">
+  <div class="eyebrow">QA report · Version 1.0 · September 2026</div>
+  <h1>Baseline Breaker <span class="accent">verification</span></h1>
+  <p class="lede">What was tested, on what, how, and what was found. Verification combined scripted simulation of the full game loop with hands-on runs on desktop browsers, an Android emulator and an iOS simulator. Real-device testing is the one gap and is scheduled as the first task of the ship phase.</p>
+</header>
+
+<div class="kpis">
+  <div class="kpi"><div class="k">Test cases</div><div class="v">42</div><div class="n">38 pass · 0 fail · 4 not run (real devices)</div></div>
+  <div class="kpi"><div class="k">Defects found</div><div class="v">7</div><div class="n">7 fixed during development · 0 open</div></div>
+  <div class="kpi"><div class="k">Console errors</div><div class="v">0</div><div class="n">Web, Android WebView, iOS WKWebView</div></div>
+  <div class="kpi"><div class="k">Simulated rounds</div><div class="v">14</div><div class="n">Automated play-throughs incl. level clears</div></div>
+</div>
+
+<h2>1. Environments</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Platform</th><th>Environment</th><th>Build</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Web, desktop</td><td>Chromium-based in-app browser, 1280 × 720 and responsive pane sizes</td><td>Live GitHub Pages build and local server</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Web, phone viewport</td><td>Chromium mobile emulation 375 × 812, coarse pointer</td><td>Local server</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Android</td><td>Android 16 emulator (API 36, arm64, software GPU), 1080 × 2400</td><td>Debug APK from the same source as the release bundle</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>iOS</td><td>iPhone 17 Pro simulator, iOS 26.4</td><td>Debug build, Xcode 26.4</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Real Android phones</td><td>Two budget, two flagship</td><td>Release bundle via internal test track</td><td><span class="chip na">Scheduled</span></td></tr>
+<tr><td>Real iPhones</td><td>One older, one current</td><td>TestFlight</td><td><span class="chip na">Scheduled</span></td></tr>
+</tbody></table></div>
+
+<h2>2. Method</h2>
+<p>The engine exposes a debug handle that steps the simulation deterministically and can hand the paddle to the built-in AI. Each automated round drives a real game: the countdown, serves, brick collisions, boost drops and pickups, level clears and life loss all execute exactly as they do for a player, with the renderer drawing every frame. Hands-on runs then covered input, screens and native behaviour that a script cannot judge.</p>
+
+<h2>3. Test cases</h2>
+<h3>Game loop</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Case</th><th>Expected</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Countdown 3-2-1 then automatic serve</td><td>Ball launches within 100 ms of the countdown ending</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Ball lost past baseline</td><td>Life decrements, red flash and shake, "Out!" call, 700 ms countdown, re-serve</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Third life lost</td><td>Court desaturates, results screen after 1 s with correct score and stats</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Level cleared</td><td>Clear bonus added, "Game!" banner, next level from the correct difficulty pool, ball re-frozen and re-served without countdown</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Level pools</td><td>Opener fixed; pools 1–4 selected by levels cleared; no repeat until a pool is exhausted</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Multi-hit bricks</td><td>Stack height decreases per hit, cube pulses and flashes, points per kind (1–4)</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Unbreakable bricks</td><td>Ball rebounds with a clank; destroyed only by Smash or Power Shot for 5 points</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Combo scoring</td><td>Combo counts bricks per rally, resets on paddle contact or lost ball, multiplier steps every three up to ×4, popups show per-hit value</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Speed ramp</td><td>Base speed plus per-level increments as specified; heavy ball slowed by 17.5%</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Anti-loop</td><td>Repeated wall-to-wall bounces gain a small angle offset; no infinite horizontal loops observed in 14 rounds</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Best score</td><td>Persists across reloads and app restarts; New Best badge only when beaten</td><td><span class="chip pass">Pass</span></td></tr>
+</tbody></table></div>
+
+<h3>Boosts</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Case</th><th>Expected</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Drop order</td><td>First six drops follow the tutorial order; afterwards a shuffled deck with no immediate repeat</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Item fall and pickup</td><td>Falls at 0.0069 units/ms, picked on paddle overlap, banner names the boost, haptic on phones</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Defensive Wall</td><td>Baseline solid and glowing blue for 10 s; ball rebounds</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Multiball</td><td>Second ball frozen on paddle 500 ms then launched; max four balls; not offered with two or more in play</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Smash</td><td>Projectile armed every 500 ms alternating sides, fires after 600 ms, destroys first brick including unbreakable</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Heavy Ball</td><td>Radius doubles, points double, speed reduced</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Racket XL</td><td>Paddle eases to 1.7× width for 10 s and back</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Power Shot</td><td>Ball passes through and destroys bricks; red glow</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Timers and tray</td><td>Pills appear with countdown bars, disappear on expiry, all clear on life loss</td><td><span class="chip pass">Pass</span></td></tr>
+</tbody></table></div>
+
+<h3>Input and screens</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Case</th><th>Expected</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Mouse</td><td>Paddle follows cursor over the court without a click during play; click-hold also works</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Touch</td><td>Drag anywhere; paddle travel is 1.35× finger travel; hint reads "Touch &amp; hold"</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Keyboard</td><td>Arrows and A/D move, Up/K pull forward, Escape/P pause</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Home → boosts intro → game</td><td>Screens transition with entrance animation; demo plays behind the menu with AI paddle</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Pause and resume</td><td>Pause dialog; resume re-serves after a 700 ms countdown; app backgrounding pauses</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Results</td><td>Score counts up; levels, bricks, best combo, best; Play again, Share, Menu</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Share</td><td>Native share sheet on phones; clipboard copy with confirmation on desktop</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Sound toggle</td><td>Persists; audio unlocks on first interaction</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Reduced motion</td><td>Entrance and popup animations disabled when the OS setting is on</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Landscape phone</td><td>Rotate prompt shown only on touch devices</td><td><span class="chip pass">Pass</span></td></tr>
+</tbody></table></div>
+
+<h3>Native</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Case</th><th>Expected</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Android install and launch</td><td>Splash, then home screen; app icon and name correct</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Android full screen</td><td>Status and navigation bars hidden, no reserved band, OS shows its one-time full-screen notice</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Android orientation lock</td><td>Portrait only</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Android release bundle</td><td>Signed with the upload key; <code>jarsigner</code> verifies</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>iOS build</td><td>Compiles for simulator with no warnings in app code; Swift Package Manager, no CocoaPods</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>iOS launch and play</td><td>Full round to results; status bar hidden; Dynamic Island area dark</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Offline</td><td>three.js bundled locally; game loads without network (fonts fall back to system faces)</td><td><span class="chip pass">Pass</span></td></tr>
+<tr><td>Haptics</td><td>Vibration on Android; switch-control feedback on iOS; suppressed on desktop</td><td><span class="chip pass">Pass</span> (emulator reports calls; felt response needs hardware)</td></tr>
+<tr><td>Frame rate on hardware</td><td>60 fps on flagship, 30 fps floor on budget devices</td><td><span class="chip na">Not run</span></td></tr>
+<tr><td>Thermal behaviour over 15 minutes</td><td>No throttling below 30 fps</td><td><span class="chip na">Not run</span></td></tr>
+<tr><td>Touch feel on hardware</td><td>Paddle gain judged comfortable by three testers</td><td><span class="chip na">Not run</span></td></tr>
+<tr><td>Tablet layout</td><td>Court fills a 4:3 display without clipping</td><td><span class="chip na">Not run</span></td></tr>
+</tbody></table></div>
+
+<h2>4. Defects found and fixed</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Defect</th><th>Cause</th><th>Fix</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>All overlay screens visible at once</td><td>Stylesheet display rule overrode the hidden attribute</td><td>Global hidden rule with priority</td><td><span class="chip fixed">Fixed</span></td></tr>
+<tr><td>2</td><td>Bricks cast shadows but did not draw</td><td>three.js r128 sizes the instance-colour buffer from the count at first draw, which was zero</td><td>Buffer pre-allocated for all 572 cubes</td><td><span class="chip fixed">Fixed</span></td></tr>
+<tr><td>3</td><td>Bricks invisible from the low camera</td><td>Instanced mesh culled by its base geometry bounds</td><td>Culling disabled for the brick mesh</td><td><span class="chip fixed">Fixed</span></td></tr>
+<tr><td>4</td><td>White status bar on Android</td><td>Android 15+ ignores bar colour attributes</td><td>Dark window background, then SystemBars plugin configured hidden with inset handling off</td><td><span class="chip fixed">Fixed</span></td></tr>
+<tr><td>5</td><td>Reserved band above the web view on Android</td><td>Capacitor's default inset handling</td><td>Inset handling disabled; immersive activity</td><td><span class="chip fixed">Fixed</span></td></tr>
+<tr><td>6</td><td>Rotate prompt covered the game in small desktop windows</td><td>Media query lacked a pointer condition</td><td>Prompt limited to coarse-pointer devices</td><td><span class="chip fixed">Fixed</span></td></tr>
+<tr><td>7</td><td>Browser served stale scripts after deploys</td><td>No cache busting</td><td>Versioned asset URLs</td><td><span class="chip fixed">Fixed</span></td></tr>
+</tbody></table></div>
+
+<h2>5. Known limitations</h2>
+<ul class="tight">
+<li>Sound effects are synthesised; a recorded set is planned for the ship phase.</li>
+<li>Fonts load from Google Fonts on first run; offline sessions fall back to system faces until fonts are bundled (ship phase).</li>
+<li>Quality tiers were set by reasoning, not measurement; real-device profiling will tune them.</li>
+<li>The iOS project uses a local copy of the Capacitor runtime package. Running <code>npx cap sync ios</code> restores the remote dependency; the README explains how to re-point it.</li>
+<li>No analytics or crash reporting in 1.0, so production behaviour is not yet observable.</li>
+</ul>
+
+<footer>Automated runs are reproducible from the repository: open the game, then use the debug handle described in the README to step the simulation. Screenshots from each environment are retained with the project files.</footer>
+</div>
