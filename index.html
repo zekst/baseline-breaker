@@ -7,13 +7,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@500;700&display=swap">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 
 <div id="stage">
   <canvas id="court" aria-label="Game court"></canvas>
   <div id="flash" aria-hidden="true"></div>
+  <div id="popups" aria-hidden="true"></div>
+  <div id="banner" hidden aria-live="polite"><span class="banner-title"></span><span class="banner-sub"></span></div>
 
   <!-- Persistent chrome -->
   <header id="topbar">
@@ -40,6 +42,7 @@
     <div class="hud-block hud-center">
       <span class="hud-label">Level</span>
       <span id="hud-level" class="hud-value">1</span>
+      <span id="hud-combo" class="hud-combo" hidden></span>
     </div>
     <div class="hud-block hud-right">
       <span class="hud-label">Score</span>
@@ -56,6 +59,7 @@
         <span class="title-bottom">Breaker</span>
       </h1>
       <p class="tagline">Break every brick on the court. Three lives, six boosts, no second serve.</p>
+      <p class="howto"><span>Drag anywhere to move</span><span>Chain bricks for combo points</span><span>Catch the boosts</span></p>
       <div class="rule"></div>
       <div class="cta-row">
         <button id="btn-play" class="btn btn-primary" type="button">
@@ -133,18 +137,20 @@
   <!-- Results -->
   <section id="screen-results" class="screen" hidden>
     <div class="dialog results">
-      <span class="eyebrow">Game over</span>
+      <div class="eyebrow-row"><span class="eyebrow">Game over</span><span id="res-badge" class="badge" hidden>New best</span></div>
       <h2 class="dialog-title" id="results-headline">Game, set, match.</h2>
       <dl class="stats">
         <div><dt>Score</dt><dd id="res-score">0</dd></div>
         <div><dt>Levels cleared</dt><dd id="res-levels">0</dd></div>
         <div><dt>Bricks broken</dt><dd id="res-bricks">0</dd></div>
+        <div><dt>Best combo</dt><dd id="res-combo">×0</dd></div>
         <div><dt>Best</dt><dd id="res-best">0</dd></div>
       </dl>
       <div class="cta-row">
         <button id="btn-again" class="btn btn-primary" type="button">
           <span class="btn-ball" aria-hidden="true"></span>Play again
         </button>
+        <button id="btn-share" class="btn btn-ghost" type="button">Share</button>
         <button id="btn-home" class="btn btn-ghost" type="button">Menu</button>
       </div>
     </div>
@@ -156,8 +162,8 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="levels.js?v=6"></script>
-<script src="render3d.js?v=6"></script>
-<script src="game.js?v=6"></script>
+<script src="levels.js?v=8"></script>
+<script src="render3d.js?v=8"></script>
+<script src="game.js?v=8"></script>
 </body>
 </html>

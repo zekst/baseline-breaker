@@ -3,7 +3,25 @@
   "appName": "Baseline Breaker",
   "webDir": "www",
   "backgroundColor": "#061109",
-  "android": { "backgroundColor": "#061109", "allowMixedContent": false },
-  "ios": { "contentInset": "never", "backgroundColor": "#061109" },
-  "plugins": { "SplashScreen": { "launchShowDuration": 600, "backgroundColor": "#061109", "launchAutoHide": true } }
+  "android": {
+    "backgroundColor": "#061109",
+    "allowMixedContent": false,
+    "adjustMarginsForEdgeToEdge": "disable"
+  },
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#061109"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 600,
+      "backgroundColor": "#061109",
+      "launchAutoHide": true
+    },
+    "SystemBars": {
+      "hidden": true,
+      "style": "DARK",
+      "insetsHandling": "disable"
+    }
+  }
 }

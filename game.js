@@ -101,7 +101,7 @@ const G = {
   time: 0, lastT: 0,
   score: 0, lives: LIVES, finished: 0, bricksBroken: 0, levelName: '',
   blocks: [], balls: [], items: [], projectiles: [], particles: [],
-  paddle: { x: W / 2, y: PADDLE_Y, tx: W / 2, ty: PADDLE_Y, vx: 0, size: 1, sizeT: 1, held: false },
+  paddle: { x: W / 2, y: PADDLE_Y, tx: W / 2, ty: PADDLE_Y, vx: 0, size: 1, sizeT: 1, held: false, squash: 0 },
   bonuses: {},              // name -> expiry time
   drop: { tutorial: 0, deck: [], last: null, tSinceDrop: 0, tSincePick: 0, blocksSince: 0 },
   smash: { next: 0, side: 1 },
@@ -109,7 +109,25 @@ const G = {
   ai: { offset: 0, reactAt: 0, targetX: W / 2 },
   best: Number(localStorage.getItem('bb-best') || 0),
   timers: [],
+  fx: [],                   // one-shot effects consumed by the renderer
+  combo: 0, comboBest: 0, maxCombo: 0, newBest: false,
+  input: { type: 'mouse', lastX: null },
 };
+const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+function fx(type, data) { G.fx.push(Object.assign({ type }, data || {})); }
+/* haptics: Android WebView / Chrome via vibrate; iOS via the switch-control trick (no native plugin needed) */
+const Haptics = (() => {
+  let sw = null;
+  const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (ios) { sw = document.createElement('input'); sw.type = 'checkbox'; sw.setAttribute('switch', ''); sw.style.cssText = 'position:fixed;opacity:0;pointer-events:none;width:1px;height:1px;left:-10px'; document.body.appendChild(sw); }
+  let armed = false; window.addEventListener('pointerdown', () => { armed = true; }, { once: true, passive: true });
+  const buzz = ms => { if (!armed || !isTouch) return; try { if (navigator.vibrate) navigator.vibrate(ms); else if (sw) { sw.click(); } } catch (e) {} };
+  return { tap: () => buzz(8), hit: () => buzz(14), heavy: () => buzz([30, 30, 40]), pick: () => buzz([10, 20, 10]) };
+})();
+let wakeLock = null;
+async function keepAwake(on) { try { if (on && !wakeLock && navigator.wakeLock) { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); } else if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; } } catch (e) {} }
+
 
 function after(ms, fn) { G.timers.push({ at: G.time + ms, fn }); }
 function clearTimers() { G.timers.length = 0; }
@@ -117,7 +135,7 @@ function runTimers() { for (let i = G.timers.length - 1; i >= 0; i--) if (G.time
 
 /* ------------------------------------------------------------------ entities */
 function makeBall(x, y, frozen = true) {
-  return { x, y, dx: 0, dy: -1, r: BALL_R, frozen, visible: true, addVel: 0, history: [], bounceScore: 0, lockMult: G.balls.length % 2 ? -1 : 1, lastBottom: false, trail: [] };
+  return { x, y, dx: 0, dy: -1, r: BALL_R, frozen, visible: true, addVel: 0, history: [], bounceScore: 0, lockMult: G.balls.length % 2 ? -1 : 1, lastBottom: false, trail: [], squash: 0 };
 }
 function respawnBall() {
   G.balls = [makeBall(G.paddle.x, G.paddle.y - BALL_R - 0.1)];
@@ -138,7 +156,9 @@ function ballRadius() { return activeBonus('heavyball') ? BALL_R * 2 : BALL_R; }
 function paddleTargetSize() { return activeBonus('racket') ? 1.7 : 1; }
 
 function grantBonus(name) {
-  Sound.pick();
+  Sound.pick(); Haptics.pick();
+  banner(BONUSES[name].label, name === 'multiball' ? 'Extra ball!' : '10 seconds', 1100);
+  fx('pick', { x: G.paddle.x, y: G.paddle.y, color: BONUSES[name].color });
   G.drop.tSincePick = 0;
   if (name === 'multiball') {
     if (G.balls.filter(b => b.visible).length >= 4) return;
@@ -188,6 +208,27 @@ function addScore(n) {
   G.score += n; el.score.textContent = G.score;
   el.score.classList.add('bump'); setTimeout(() => el.score.classList.remove('bump'), 120);
 }
+const popupLayer = document.getElementById('popups');
+function popup(text, x, y, cls) {
+  if (!popupLayer || !R3.project) return;
+  const p = R3.project(x, 0.4, y); if (!p) return;
+  const d = document.createElement('div'); d.className = 'popup ' + (cls || ''); d.textContent = text;
+  d.style.left = p.x + 'px'; d.style.top = p.y + 'px'; popupLayer.appendChild(d);
+  setTimeout(() => d.remove(), 900);
+}
+function banner(title, sub, ms) {
+  const b = document.getElementById('banner'); if (!b) return;
+  b.querySelector('.banner-title').textContent = title; b.querySelector('.banner-sub').textContent = sub || '';
+  b.hidden = false; b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+  clearTimeout(banner._t); banner._t = setTimeout(() => { b.hidden = true; }, ms || 1400);
+}
+function comboMult() { return Math.min(4, 1 + Math.floor(Math.max(0, G.combo - 1) / 3)); }
+function bumpCombo() {
+  G.combo++; G.maxCombo = Math.max(G.maxCombo, G.combo);
+  const c = document.getElementById('hud-combo');
+  if (c) { if (G.combo >= 2) { c.hidden = false; c.textContent = 'Combo ×' + G.combo; c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); } }
+}
+function resetCombo() { G.combo = 0; const c = document.getElementById('hud-combo'); if (c) c.hidden = true; }
 function burst(x, y, color, n = 10, speed = 0.006) {
   for (let i = 0; i < n; i++) {
     const a = rand(0, Math.PI * 2), s = rand(speed * 0.3, speed);
@@ -196,18 +237,24 @@ function burst(x, y, color, n = 10, speed = 0.006) {
 }
 function hitBlock(block, { force = false, byBall = null } = {}) {
   const top = block.stack[block.stack.length - 1];
-  if (top === 1 && !force) { block.shake = 1; Sound.hard(); return false; }
+  if (top === 1 && !force) { block.shake = 1; block.hit = 1; Sound.hard(); fx('clank', { x: block.x + CELL / 2, y: block.y + CELL / 2 }); return false; }
   block.stack.pop();
   const kind = top === 1 ? 1 : top;
+  const color = top === 1 ? '#8aa79c' : KIND_COLORS[top] || '#fff';
   const mult = byBall && activeBonus('heavyball') ? 2 : 1;
-  if (G.state !== 'HOME') addScore(KIND_POINTS[kind] * mult);
-  burst(block.x + CELL / 2, block.y + CELL / 2, top === 1 ? '#8aa79c' : KIND_COLORS[top] || '#fff', 8);
-  Sound.brick(kind);
+  if (G.state !== 'HOME') {
+    if (byBall) bumpCombo();
+    const pts = KIND_POINTS[kind] * mult * (byBall ? comboMult() : 1);
+    addScore(pts);
+    popup('+' + pts, block.x + CELL / 2, block.y + CELL / 2, comboMult() > 1 ? 'hot' : '');
+  }
+  burst(block.x + CELL / 2, block.y + CELL / 2, color, 6);
+  fx('break', { x: block.x + CELL / 2, y: block.y + CELL / 2, color, layer: block.stack.length });
+  Sound.brick(kind); if (G.state !== 'HOME') Haptics.tap();
   G.bricksBroken++;
   if (!block.stack.length) {
     G.blocks.splice(G.blocks.indexOf(block), 1);
-    burst(block.x + CELL / 2, block.y + CELL / 2, '#ece8d6', 6, 0.004);
-  }
+  } else { block.hit = 1; }
   if (top !== 1) maybeDrop(block);
   if (G.state === 'RUNNING' && !G.blocks.some(b => b.stack.some(k => k !== 1))) levelFinished();
   return true;
@@ -247,13 +294,13 @@ function stepBall(b, dt) {
     const s = Math.min(stepLen, remaining); remaining -= s;
     b.x += b.dx * s; b.y += b.dy * s;
     // side / far walls
-    if (b.x < b.r) { b.x = b.r; b.dx = Math.abs(b.dx); noteHit(b, 'wl'); Sound.wall(); }
-    if (b.x > W - b.r) { b.x = W - b.r; b.dx = -Math.abs(b.dx); noteHit(b, 'wr'); Sound.wall(); }
+    if (b.x < b.r) { b.x = b.r; b.dx = Math.abs(b.dx); noteHit(b, 'wl'); Sound.wall(); fx('wall', { x: 0, y: b.y }); }
+    if (b.x > W - b.r) { b.x = W - b.r; b.dx = -Math.abs(b.dx); noteHit(b, 'wr'); Sound.wall(); fx('wall', { x: W, y: b.y }); }
     if (b.y < b.r) { b.y = b.r; b.dy = Math.abs(b.dy); noteHit(b, 'wt'); Sound.wall(); }
     // baseline
     if (b.y > LOSE_Y - b.r) {
       if (activeBonus('defensivewall') || G.autoplay) { b.y = LOSE_Y - b.r; b.dy = -Math.abs(b.dy); noteHit(b, 'wb'); Sound.wall(); burst(b.x, LOSE_Y, BONUSES.defensivewall.color, 5, 0.003); }
-      else { b.visible = false; return; }
+      else { b.visible = false; fx('out', { x: b.x, y: LOSE_Y }); return; }
     }
     // paddle
     if (b.dy > 0 && b.y + b.r > pTop && b.y - b.r < pBot && b.x > P.x - halfW - b.r && b.x < P.x + halfW + b.r && b.history[0] !== 'paddle') {
@@ -265,7 +312,9 @@ function stepBall(b, dt) {
       b.dy = -Math.abs(b.dy);
       b.addVel = Math.min(0.02, Math.abs(P.vx) * 0.8);
       clampAngle(b); noteHit(b, 'paddle'); Sound.paddle();
-      burst(b.x, pTop, '#ece8d6', 4, 0.003);
+      if (G.state === 'RUNNING') { resetCombo(); Haptics.hit(); }
+      P.squash = 1; b.squash = 1;
+      burst(b.x, pTop, '#ece8d6', 4, 0.003); fx('paddle', { x: b.x, y: pTop });
       continue;
     }
     // blocks
@@ -301,7 +350,8 @@ function stepBall(b, dt) {
 function stepPaddle(dt) {
   const P = G.paddle;
   const px = P.x;
-  const ease = 1 - Math.pow(1 - (P.held ? 0.45 : 0.3), dt / 16.67);
+  const ease = 1 - Math.pow(1 - (P.held ? 0.7 : 0.35), dt / 16.67);
+  P.squash = Math.max(0, P.squash - dt / 180);
   if (G.autoplay) aiThink();
   P.x = lerp(P.x, P.tx, ease);
   P.y = lerp(P.y, P.ty, ease);
@@ -367,7 +417,7 @@ function stepParticles(dt) {
     p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.98; p.vy *= 0.98;
     if (p.t > p.life) G.particles.splice(i, 1);
   }
-  for (const b of G.blocks) b.shake = Math.max(0, b.shake - dt / 250);
+  for (const b of G.blocks) { b.shake = Math.max(0, b.shake - dt / 250); b.hit = Math.max(0, (b.hit || 0) - dt / 220); }
 }
 
 /* ------------------------------------------------------------------ game flow */
@@ -380,7 +430,7 @@ function updateLivesHud() {
 }
 
 function startDemo() {
-  G.autoplay = true; G.state = 'HOME'; G.finished = 0; G.bonuses = {};
+  G.autoplay = true; G.state = 'HOME'; G.finished = 0; G.bonuses = {}; keepAwake(false); resetCombo();
   clearTimers();
   const pool = [OPENER, ...POOLS[1], ...POOLS[2]].filter(Boolean);
   loadLevel(pool[Math.floor(Math.random() * pool.length)]);
@@ -391,8 +441,10 @@ function startDemo() {
   showScreen('home');
 }
 
+function levelTitle(n) { return ({ serve: 'The serve', spceship: 'Spaceship', balle3: 'Three balls', croco1: 'Croc', wallppr: 'Paper wall', wallalt: 'Split wall' })[n] || n.charAt(0).toUpperCase() + n.slice(1); }
+function countUp(elm, to) { const t0 = performance.now(); const step = () => { const k = Math.min(1, (performance.now() - t0) / 700); elm.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); }; step(); }
 function startGame() {
-  G.autoplay = false; G.score = 0; G.lives = LIVES; G.finished = 0; G.bricksBroken = 0;
+  G.autoplay = false; G.score = 0; G.lives = LIVES; G.finished = 0; G.bricksBroken = 0; G.combo = 0; G.maxCombo = 0; G.newBest = false; keepAwake(true);
   G.bonuses = {}; G.drop = { tutorial: 0, deck: [], last: null, tSinceDrop: 0, tSincePick: 0, blocksSince: 0 };
   G.items.length = 0; G.projectiles.length = 0; G.particles.length = 0; G.grey = 0; used.clear();
   clearTimers();
@@ -401,6 +453,7 @@ function startGame() {
   G.paddle.tx = W / 2; G.paddle.x = W / 2; G.paddle.ty = PADDLE_Y; G.paddle.size = 1;
   loadLevel(OPENER);
   respawnBall();
+  banner('Level 1', levelTitle(OPENER.name), 1400);
   countdown(1000);
 }
 
@@ -410,6 +463,7 @@ function countdown(perNum) {
   const tick = () => {
     if (G.state !== 'COUNTDOWN') return;
     el.countNum.textContent = String(n);
+    el.countNum.classList.toggle('go', false);
     el.countNum.style.animation = 'none'; void el.countNum.offsetWidth; el.countNum.style.animation = '';
     Sound.count(n === 1);
     n--;
@@ -425,10 +479,11 @@ function countdown(perNum) {
 
 function loseLife() {
   G.state = 'LOSE_LIFE';
-  G.lives--; updateLivesHud();
+  G.lives--; updateLivesHud(); resetCombo();
   G.shake = 1; G.flash = 1; G.flashColor = '#e00020';
   G.bonuses = {}; G.items.length = 0; G.projectiles.length = 0;
-  Sound.lose();
+  Sound.lose(); Haptics.heavy();
+  banner('Out!', G.lives > 0 ? (G.lives === 1 ? 'Last life' : G.lives + ' lives left') : 'Game over', 1200);
   after(900, () => {
     if (G.lives > 0) { respawnBall(); countdown(700); }
     else gameOver();
@@ -441,24 +496,31 @@ function levelFinished() {
   addScore(Math.floor(10 + 7 * ((level ? level.diff : 1) - 1) + 4 * G.finished));
   G.finished++;
   G.flash = 0.6; G.flashColor = '#dcef3f';
-  Sound.clear();
+  Sound.clear(); Haptics.pick(); resetCombo();
+  banner(G.finished % 3 === 0 ? 'Set!' : 'Game!', 'Level ' + G.finished + ' cleared', 1300);
+  fx('clear', {});
   for (const b of G.balls) b.frozen = true;
-  after(400, () => {
+  after(700, () => {
     loadLevel(pickLevel(G.finished));
     respawnBall();
-    after(1100, () => { if (G.state === 'LEVEL_DONE') { G.state = 'RUNNING'; launchBall(G.balls[0]); } });
+    banner('Level ' + (G.finished + 1), levelTitle(G.levelName), 1200);
+    after(1300, () => { if (G.state === 'LEVEL_DONE') { G.state = 'RUNNING'; launchBall(G.balls[0]); } });
   });
 }
 
 function gameOver() {
-  G.state = 'GAME_OVER'; G.grey = 1;
+  G.state = 'GAME_OVER'; G.grey = 1; keepAwake(false);
+  G.newBest = G.score > G.best && G.score > 0;
   if (G.score > G.best) { G.best = G.score; localStorage.setItem('bb-best', String(G.best)); }
   after(1000, () => {
     $('res-score').textContent = G.score; $('res-levels').textContent = G.finished;
     $('res-bricks').textContent = G.bricksBroken; $('res-best').textContent = G.best;
-    $('results-headline').textContent = G.finished >= 8 ? 'Champion form.' : G.finished >= 4 ? 'Strong rally.' : 'Game, set, match.';
+    $('results-headline').textContent = G.newBest ? 'New personal best.' : G.finished >= 8 ? 'Champion form.' : G.finished >= 4 ? 'Strong rally.' : 'Game, set, match.';
+    $('res-combo').textContent = '×' + G.maxCombo;
+    $('res-badge').hidden = !G.newBest;
     el.btnPause.hidden = true;
     showScreen('results');
+    countUp($('res-score'), G.score);
   });
 }
 
@@ -499,6 +561,7 @@ window.addEventListener('resize', () => R3.resize());
 const flashEl = document.getElementById('flash');
 function render() {
   R3.render(G);
+  G.fx.length = 0;
   if (flashEl) { flashEl.style.opacity = G.flash > 0 ? String(G.flash * 0.45) : '0'; flashEl.style.background = G.flashColor; }
 }
 
@@ -512,7 +575,7 @@ function update(dt) {
     G.drop.tSinceDrop += dt; G.drop.tSincePick += dt;
     for (const b of G.balls) {
       if (!b.visible) continue;
-      b.r = activeBonus('heavyball') ? BALL_R * 2 : BALL_R;
+      b.r = activeBonus('heavyball') ? BALL_R * 2 : BALL_R; b.squash = Math.max(0, (b.squash || 0) - dt / 140);
       if (!b.frozen) { b.trail.push({ x: b.x, y: b.y }); if (b.trail.length > 6) b.trail.shift(); }
       stepBall(b, dt);
     }
@@ -538,17 +601,29 @@ function frame(t) {
 
 /* ------------------------------------------------------------------ input */
 function pointerToWorld(e) { return R3.pointerToGround(e.clientX, e.clientY) || { x: G.paddle.tx, y: G.paddle.ty }; }
+const TOUCH_GAIN = 1.35; // finger travel → paddle travel, so the finger never has to sit on the paddle
 canvas.addEventListener('pointerdown', e => {
   Sound.unlock();
   if (G.autoplay) return;
+  G.input.type = e.pointerType;
   G.paddle.held = true; canvas.classList.add('held'); canvas.setPointerCapture(e.pointerId);
-  const p = pointerToWorld(e); G.paddle.tx = p.x;
+  const p = pointerToWorld(e); if (!p) return;
+  if (e.pointerType === 'touch') { G.input.lastX = p.x; }
+  else G.paddle.tx = p.x;
 });
 canvas.addEventListener('pointermove', e => {
-  if (!G.paddle.held || G.autoplay) return;
-  const p = pointerToWorld(e); G.paddle.tx = p.x;
+  if (G.autoplay) return;
+  const p = pointerToWorld(e); if (!p) return;
+  if (e.pointerType === 'touch') {
+    if (!G.paddle.held) return;
+    if (G.input.lastX != null) G.paddle.tx = clamp(G.paddle.tx + (p.x - G.input.lastX) * TOUCH_GAIN, 0, W);
+    G.input.lastX = p.x;
+  } else {
+    // mouse: the paddle follows the cursor whenever it is over the court, no click needed
+    if (G.state === 'RUNNING' || G.state === 'COUNTDOWN' || G.paddle.held) G.paddle.tx = p.x;
+  }
 });
-const release = () => { G.paddle.held = false; canvas.classList.remove('held'); };
+const release = () => { G.paddle.held = false; G.input.lastX = null; canvas.classList.remove('held'); };
 canvas.addEventListener('pointerup', release); canvas.addEventListener('pointercancel', release);
 window.addEventListener('blur', release);
 
@@ -571,6 +646,11 @@ $('btn-play').addEventListener('click', () => { Sound.unlock(); G.state = 'INTRO
 $('btn-start').addEventListener('click', () => { Sound.unlock(); startGame(); });
 $('btn-again').addEventListener('click', () => { startGame(); });
 $('btn-home').addEventListener('click', () => { startDemo(); });
+$('btn-share').addEventListener('click', async () => {
+  const text = 'I scored ' + G.score + ' in Baseline Breaker (' + G.finished + ' levels, best combo ×' + G.maxCombo + '). Can you beat it?';
+  const url = 'https://zekst.github.io/baseline-breaker/';
+  try { if (navigator.share) await navigator.share({ title: 'Baseline Breaker', text, url }); else { await navigator.clipboard.writeText(text + ' ' + url); banner('Copied', 'Score copied to clipboard', 1200); } } catch (e) {}
+});
 $('btn-resume').addEventListener('click', resumeGame);
 $('btn-quit').addEventListener('click', () => { startDemo(); });
 el.btnPause.addEventListener('click', () => { if (G.state === 'PAUSED') resumeGame(); else pauseGame(); });

@@ -6,6 +6,9 @@ window.Render3D = (() => {
 const T = window.THREE;
 let renderer, scene, camera, ground, baseline, farWall, blocksMesh, paddle, paddleCaps, ballGroup, itemGroup, projGroup, particles, ballLight;
 let ctxRef = null, W = 6.5, H = 12, CELL = 0.5, ROWS = 11;
+const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+const Q = { tier: coarse ? 1 : 2, frames: 0, slow: 0, t0: 0 };  // 2 = full, 1 = mobile, 0 = lite
+let sun, debris = [], debrisGeo, kick = 0, clearAnim = 0;
 const tmpM = new T.Matrix4(), tmpP = new T.Vector3(), tmpQ = new T.Quaternion(), tmpS = new T.Vector3(), tmpC = new T.Color();
 const raycaster = new T.Raycaster(), groundPlane = new T.Plane(new T.Vector3(0, 1, 0), 0), ndc = new T.Vector2();
 const MAX_CUBES = 13 * 11 * 4, MAX_PARTICLES = 800;
@@ -42,8 +45,8 @@ function makeCourtTexture() {
 function init(canvas, ctx) {
   ctxRef = ctx; W = ctx.W; H = ctx.H; CELL = ctx.CELL; ROWS = ctx.ROWS;
   renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-  renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
+  renderer.setPixelRatio(Math.min(Q.tier === 2 ? 2 : 1.5, window.devicePixelRatio || 1));
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = Q.tier === 2 ? T.PCFSoftShadowMap : T.PCFShadowMap;
   renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.82;
 
   scene = new T.Scene();
@@ -56,9 +59,9 @@ function init(canvas, ctx) {
 
   // lights
   scene.add(new T.HemisphereLight(0xb9d3c2, 0x2a1208, 0.42));
-  const sun = new T.DirectionalLight(0xfff1cc, 1.15);
+  sun = new T.DirectionalLight(0xfff1cc, 1.15);
   sun.position.set(W / 2 + 3, 12, 9); sun.target.position.set(W / 2, 0, 5); scene.add(sun.target);
-  sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+  sun.castShadow = true; sun.shadow.mapSize.set(Q.tier === 2 ? 2048 : 1024, Q.tier === 2 ? 2048 : 1024);
   Object.assign(sun.shadow.camera, { left: -9, right: 9, top: 12, bottom: -12, near: 1, far: 50 });
   sun.shadow.bias = -0.0008; scene.add(sun);
   const rim = new T.PointLight(0x5cc8ff, 0.5, 20); rim.position.set(W / 2, 4, -2); scene.add(rim);
@@ -103,8 +106,21 @@ function init(canvas, ctx) {
   particles = new T.Points(pg, new T.PointsMaterial({ size: 0.09, vertexColors: true, transparent: true, blending: T.AdditiveBlending, depthWrite: false, map: glowTex }));
   particles.frustumCulled = false; scene.add(particles);
 
+  debrisGeo = new T.BoxGeometry(0.12, 0.09, 0.12);
   buildStadium();
   resize();
+}
+function setTier(t) {
+  if (t === Q.tier) return; Q.tier = t;
+  renderer.shadowMap.enabled = t > 0; sun.castShadow = t > 0;
+  renderer.setPixelRatio(Math.min(t === 2 ? 2 : t === 1 ? 1.5 : 1, window.devicePixelRatio || 1));
+  scene.traverse(o => { if (o.material && o.material.needsUpdate !== undefined) o.material.needsUpdate = true; });
+  resize();
+}
+function autoQuality(dt) {
+  // drop a tier if frames stay slow; never climbs back on its own (avoids flicker)
+  Q.frames++; if (dt > 24) Q.slow++;
+  if (Q.frames >= 120) { if (Q.slow > 45 && Q.tier > 0) setTier(Q.tier - 1); Q.frames = 0; Q.slow = 0; }
 }
 
 function buildStadium() {
@@ -202,6 +218,12 @@ function resize() {
   fitCamera();
 }
 
+function project(x, y, z) {
+  if (!camera) return null;
+  const v = new T.Vector3(x, y, z).project(camera);
+  if (v.z > 1) return null;
+  return { x: (v.x + 1) / 2 * window.innerWidth, y: (1 - v.y) / 2 * window.innerHeight };
+}
 function pointerToGround(clientX, clientY) {
   ndc.set((clientX / window.innerWidth) * 2 - 1, -(clientY / window.innerHeight) * 2 + 1);
   raycaster.setFromCamera(ndc, camera);
@@ -240,13 +262,43 @@ function ensureProj(i) {
   m.rotation.x = Math.PI / 2; projGroup.add(m); projMeshes.push(m); return m;
 }
 
+let lastT = 0;
+function spawnDebris(x, y, color, n) {
+  for (let i = 0; i < n; i++) {
+    let m = debris.find(d => !d.visible);
+    if (!m) { if (debris.length > 60) return; m = new T.Mesh(debrisGeo, new T.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 })); m.castShadow = Q.tier === 2; scene.add(m); debris.push(m); }
+    m.visible = true; m.material.color.set(color); m.position.set(x, 0.25, y);
+    m.userData = { vx: (Math.random() - 0.5) * 0.006, vy: 0.004 + Math.random() * 0.006, vz: (Math.random() - 0.5) * 0.006, rx: (Math.random() - 0.5) * 0.02, rz: (Math.random() - 0.5) * 0.02, life: 900 + Math.random() * 400, t: 0 };
+    m.scale.setScalar(0.7 + Math.random() * 0.6);
+  }
+}
 function render(G) {
   if (!renderer) return;
   const time = G.time, active = ctxRef.activeBonus;
-  // camera shake
+  const now = performance.now(), dt = lastT ? Math.min(50, now - lastT) : 16; lastT = now;
+  if (G.state === 'RUNNING') autoQuality(dt);
+  // one-shot effects from the engine
+  for (const e of G.fx) {
+    if (e.type === 'break') { spawnDebris(e.x, e.y, e.color, Q.tier === 0 ? 3 : 6); kick = Math.max(kick, 0.35); }
+    else if (e.type === 'paddle') kick = Math.max(kick, 0.25);
+    else if (e.type === 'out') { spawnDebris(e.x, e.y - 0.1, '#e00020', 10); }
+    else if (e.type === 'pick') { spawnDebris(e.x, e.y, e.color, 8); }
+    else if (e.type === 'clear') { clearAnim = 1; }
+  }
+  kick = Math.max(0, kick - dt / 160); clearAnim = Math.max(0, clearAnim - dt / 900);
+  // debris physics
+  for (const m of debris) {
+    if (!m.visible) continue; const u = m.userData; u.t += dt;
+    m.position.x += u.vx * dt; m.position.z += u.vz * dt; m.position.y += u.vy * dt; u.vy -= 0.000022 * dt;
+    if (m.position.y < 0.05) { m.position.y = 0.05; u.vy = -u.vy * 0.4; u.vx *= 0.8; u.vz *= 0.8; }
+    m.rotation.x += u.rx * dt * 0.06; m.rotation.z += u.rz * dt * 0.06;
+    if (u.t > u.life) m.visible = false; else if (u.t > u.life - 250) m.scale.multiplyScalar(0.94);
+  }
+  // camera: shake on life loss, a small kick on hits, a push-in on level clear
   const sh = G.shake > 0 ? G.shake * 0.25 : 0;
-  camera.position.copy(camBase.look).addScaledVector(camBase.dir, camBase.dist);
-  camera.position.x += (Math.random() - 0.5) * sh; camera.position.y += (Math.random() - 0.5) * sh;
+  const dist = camBase.dist - kick * 0.15 - clearAnim * 0.6;
+  camera.position.copy(camBase.look).addScaledVector(camBase.dir, dist);
+  camera.position.x += (Math.random() - 0.5) * sh; camera.position.y += (Math.random() - 0.5) * sh - kick * 0.03;
   camera.lookAt(camBase.look);
 
   // blocks
@@ -257,12 +309,13 @@ function render(G) {
     const jx = b.shake ? (Math.random() - 0.5) * 0.06 * b.shake : 0;
     for (let i = 0; i < cnt; i++) {
       const k = b.stack[i];
+      const pulse = (i === cnt - 1 && b.hit) ? 1 + b.hit * 0.22 : 1;
       const s = appear < 1 ? Math.max(0.001, 1 - Math.pow(1 - appear, 3)) : 1;
       tmpP.set(b.x + CELL / 2 + jx, 0.17 + i * 0.34 * s + (1 - s) * 0.6, b.y + CELL / 2);
-      tmpS.set(s, s, s); tmpQ.identity(); tmpM.compose(tmpP, tmpQ, tmpS);
+      tmpS.set(s * pulse, s * (2 - pulse), s * pulse); tmpQ.identity(); tmpM.compose(tmpP, tmpQ, tmpS);
       blocksMesh.setMatrixAt(n, tmpM);
       tmpC.set(k === 1 ? '#1f6b5c' : ctxRef.KIND_COLORS[k] || '#ffffff');
-      if (i < cnt - 1) tmpC.multiplyScalar(0.72);
+      if (i < cnt - 1) tmpC.multiplyScalar(0.72); else if (b.hit) tmpC.lerp(new T.Color(0xffffff), b.hit * 0.6);
       blocksMesh.setColorAt(n, tmpC);
       n++;
     }
@@ -273,6 +326,7 @@ function render(G) {
   // paddle
   const P = G.paddle, half = ctxRef.PADDLE_HALF * P.size;
   paddle.position.set(P.x, 0.14, P.y);
+  const sq = P.squash || 0; paddle.scale.set(1 + sq * 0.12, 1 - sq * 0.35, 1 - sq * 0.25);
   paddle.userData.bar.scale.set(1, half * 2, 1);
   paddleCaps[0].position.x = -half; paddleCaps[1].position.x = half;
   const padColor = active('racket') ? ctxRef.BONUSES.racket.color : '#ece8d6';
@@ -291,7 +345,7 @@ function render(G) {
   for (const b of G.balls) {
     if (!b.visible) continue;
     const m = ensureBall(bi++);
-    m.visible = true; m.position.set(b.x, b.r, b.y); m.scale.setScalar(b.r);
+    m.visible = true; m.position.set(b.x, b.r, b.y); const bs = b.squash || 0; m.scale.set(b.r * (1 + bs * 0.3), b.r * (1 - bs * 0.3), b.r * (1 + bs * 0.3));
     m.rotation.x += 0.08; m.rotation.z += 0.05;
     m.material.color.set(power ? '#ff6a6a' : '#dcef3f'); m.material.emissive.set(power ? '#ff3a3a' : '#9fb31a'); m.material.emissiveIntensity = power ? 1.1 : 0.55;
     m.userData.glow.material.color.set(power ? '#ff6a6a' : '#dcef3f'); m.userData.glow.scale.setScalar(power ? 4.5 : 3.2);
@@ -333,5 +387,5 @@ function render(G) {
 }
 
 window.__r3 = () => ({ scene, camera, blocksMesh, renderer }); // debug
-return { init, resize, render, pointerToGround };
+return { init, resize, render, pointerToGround, project, setTier };
 })();

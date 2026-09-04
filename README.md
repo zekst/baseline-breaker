@@ -16,6 +16,14 @@ Then open http://localhost:8765. Any static server works; opening `index.html` d
 - Escape or P pauses.
 - Three lives. Clear every breakable brick to advance. Ball speed rises with each cleared level.
 
+## Game feel
+
+- **Controls**: on desktop the paddle follows the mouse over the court, no click needed; keyboard still works. On touch, drag anywhere: the paddle moves 1.35× your finger travel so your hand never covers it.
+- **Combos**: bricks broken in one rally (no paddle touch between) build a combo; every three raise the multiplier up to ×4. Floating score popups show what each hit was worth.
+- **Feedback**: 3D debris on every break, brick flash and pulse on multi-hit bricks, paddle and ball squash, camera kick on hits and push-in on a clear, red flash and shake on a lost ball, haptics on phones.
+- **Calls**: "Level 1 · The serve", "Game!" and "Set!" on clears, "Out!" with lives left, boost name when caught, "New best" badge and share button on the results screen.
+- **Performance**: three quality tiers (shadow size, pixel ratio). Phones start one tier down and the renderer drops a tier automatically if frames stay slow. The screen stays awake during play.
+
 ## Boosts
 
 | Boost | Effect | Duration |
