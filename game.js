@@ -513,7 +513,7 @@ function update(dt) {
     for (const b of G.balls) {
       if (!b.visible) continue;
       b.r = activeBonus('heavyball') ? BALL_R * 2 : BALL_R;
-      const s = G.state === 'RUNNING' && G.time % 1 < 1; if (s) { b.trail.push({ x: b.x, y: b.y }); if (b.trail.length > 6) b.trail.shift(); }
+      if (!b.frozen) { b.trail.push({ x: b.x, y: b.y }); if (b.trail.length > 6) b.trail.shift(); }
       stepBall(b, dt);
     }
     const alive = G.balls.filter(b => b.visible);

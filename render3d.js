@@ -11,7 +11,7 @@ const raycaster = new T.Raycaster(), groundPlane = new T.Plane(new T.Vector3(0, 
 const MAX_CUBES = 13 * 11 * 4, MAX_PARTICLES = 800;
 const camBase = { look: new T.Vector3(), dir: new T.Vector3(), dist: 16 };
 let glowTex, ringTex;
-const ballMeshes = [], itemMeshes = new Map(), projMeshes = [];
+const ballMeshes = [], itemMeshes = new Map(), projMeshes = [], trailMeshes = [];
 
 function makeGlowTexture() {
   const c = document.createElement('canvas'); c.width = c.height = 128;
@@ -23,18 +23,18 @@ function makeGlowTexture() {
 function makeCourtTexture() {
   const px = 160, c = document.createElement('canvas'); c.width = W * px; c.height = H * px;
   const g = c.getContext('2d');
-  g.fillStyle = '#0f2a1c'; g.fillRect(0, 0, c.width, c.height);
-  g.fillStyle = '#143722'; g.fillRect(0, ROWS * CELL * px, c.width, c.height - ROWS * CELL * px);
+  g.fillStyle = '#b0461f'; g.fillRect(0, 0, c.width, c.height);
+  g.fillStyle = '#a33f1b'; g.fillRect(0, ROWS * CELL * px, c.width, c.height - ROWS * CELL * px);
   // subtle clay-dust noise
-  for (let i = 0; i < 4000; i++) { g.fillStyle = 'rgba(255,255,255,' + (Math.random() * 0.03) + ')'; g.fillRect(Math.random() * c.width, Math.random() * c.height, 2, 2); }
-  g.strokeStyle = 'rgba(236,232,214,0.55)'; g.lineWidth = 6; g.lineCap = 'square';
+  for (let i = 0; i < 14000; i++) { g.fillStyle = Math.random() < 0.5 ? 'rgba(255,220,180,' + (Math.random() * 0.09) + ')' : 'rgba(80,20,0,' + (Math.random() * 0.12) + ')'; const r = 1 + Math.random() * 3; g.fillRect(Math.random() * c.width, Math.random() * c.height, r, r); }
+  g.strokeStyle = 'rgba(245,242,230,0.92)'; g.lineWidth = 7; g.lineCap = 'square';
   g.strokeRect(4, 4, c.width - 8, c.height - 8);
   g.beginPath();
   g.moveTo(0.6 * px, 0); g.lineTo(0.6 * px, c.height); g.moveTo((W - 0.6) * px, 0); g.lineTo((W - 0.6) * px, c.height);
   g.moveTo(0.6 * px, (ROWS * CELL + 1) * px); g.lineTo((W - 0.6) * px, (ROWS * CELL + 1) * px);
   g.moveTo(W / 2 * px, (ROWS * CELL + 1) * px); g.lineTo(W / 2 * px, c.height);
   g.stroke();
-  g.setLineDash([18, 12]); g.strokeStyle = 'rgba(236,232,214,0.35)';
+  g.setLineDash([18, 12]); g.strokeStyle = 'rgba(245,242,230,0.5)';
   g.beginPath(); g.moveTo(0, ROWS * CELL * px); g.lineTo(c.width, ROWS * CELL * px); g.stroke();
   const t = new T.CanvasTexture(c); t.anisotropy = 4; return t;
 }
@@ -44,22 +44,22 @@ function init(canvas, ctx) {
   renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
-  renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+  renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.82;
 
   scene = new T.Scene();
-  scene.fog = new T.Fog(0x061109, 22, 40);
-  camera = new T.PerspectiveCamera(48, 1, 0.1, 100);
-  camBase.look.set(W / 2, 0, 5.0);
-  camBase.dir.set(0, 0.46, 1).normalize();
+  scene.fog = new T.Fog(0x08130d, 30, 70);
+  camera = new T.PerspectiveCamera(52, 1, 0.1, 200);
+  camBase.look.set(W / 2, 0.15, 4.4);
+  camBase.dir.set(0, 0.40, 1).normalize();
 
   glowTex = makeGlowTexture();
 
   // lights
-  scene.add(new T.HemisphereLight(0x9fd3b5, 0x06110a, 0.55));
+  scene.add(new T.HemisphereLight(0xb9d3c2, 0x2a1208, 0.42));
   const sun = new T.DirectionalLight(0xfff1cc, 1.15);
   sun.position.set(W / 2 + 3, 12, 9); sun.target.position.set(W / 2, 0, 5); scene.add(sun.target);
   sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
-  Object.assign(sun.shadow.camera, { left: -6, right: 6, top: 9, bottom: -9, near: 1, far: 40 });
+  Object.assign(sun.shadow.camera, { left: -9, right: 9, top: 12, bottom: -12, near: 1, far: 50 });
   sun.shadow.bias = -0.0008; scene.add(sun);
   const rim = new T.PointLight(0x5cc8ff, 0.5, 20); rim.position.set(W / 2, 4, -2); scene.add(rim);
 
@@ -76,9 +76,10 @@ function init(canvas, ctx) {
   baseline.position.set(W / 2, 0.03, H - 0.02); scene.add(baseline);
 
   // blocks (instanced cubes)
-  const cubeGeo = new T.BoxGeometry(CELL - 0.07, 0.3, CELL - 0.07);
-  blocksMesh = new T.InstancedMesh(cubeGeo, new T.MeshStandardMaterial({ color: 0xffffff, roughness: 0.45, metalness: 0.05 }), MAX_CUBES);
-  blocksMesh.castShadow = true; blocksMesh.receiveShadow = true; blocksMesh.count = 0; scene.add(blocksMesh);
+  const cubeGeo = new T.BoxGeometry(CELL - 0.07, 0.34, CELL - 0.07);
+  blocksMesh = new T.InstancedMesh(cubeGeo, new T.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4, metalness: 0.05 }), MAX_CUBES);
+  blocksMesh.instanceColor = new T.InstancedBufferAttribute(new Float32Array(MAX_CUBES * 3).fill(1), 3); // r128 allocates this lazily from `count`, which is 0 at first draw
+  blocksMesh.castShadow = true; blocksMesh.receiveShadow = true; blocksMesh.count = 0; blocksMesh.frustumCulled = false; scene.add(blocksMesh);
 
   // paddle
   paddle = new T.Group();
@@ -102,15 +103,89 @@ function init(canvas, ctx) {
   particles = new T.Points(pg, new T.PointsMaterial({ size: 0.09, vertexColors: true, transparent: true, blending: T.AdditiveBlending, depthWrite: false, map: glowTex }));
   particles.frustumCulled = false; scene.add(particles);
 
+  buildStadium();
   resize();
+}
+
+function buildStadium() {
+  // apron of darker clay around the court, then stands rising on three sides
+  const apronMat = new T.MeshStandardMaterial({ color: 0x6f2e16, roughness: 1 });
+  const apron = new T.Mesh(new T.PlaneGeometry(W + 6, H + 8), apronMat);
+  apron.rotation.x = -Math.PI / 2; apron.position.set(W / 2, -0.005, H / 2 + 1); apron.receiveShadow = true; scene.add(apron);
+
+  const boardMat = new T.MeshStandardMaterial({ color: 0x0f3b2a, roughness: 0.55, emissive: 0x0a2a1d, emissiveIntensity: 0.5 });
+  const stripeMat = new T.MeshStandardMaterial({ color: 0xece8d6, roughness: 0.6, emissive: 0x6b6858, emissiveIntensity: 0.25 });
+  const accentMat = new T.MeshStandardMaterial({ color: 0xdcef3f, roughness: 0.5, emissive: 0xdcef3f, emissiveIntensity: 0.35 });
+  const box = (geo, mat, x, y, z, rx = 0, ry = 0) => { const m = new T.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx, ry, 0); m.castShadow = true; m.receiveShadow = true; scene.add(m); return m; };
+
+  // sponsor-style boards along the sides and the far end
+  const sideLen = H + 4, farLen = W + 8;
+  box(new T.BoxGeometry(0.12, 0.9, sideLen), boardMat, -2.2, 0.45, H / 2 + 1);
+  box(new T.BoxGeometry(0.12, 0.9, sideLen), boardMat, W + 2.2, 0.45, H / 2 + 1);
+  box(new T.BoxGeometry(farLen, 0.9, 0.12), boardMat, W / 2, 0.45, -3);
+  box(new T.BoxGeometry(0.14, 0.12, sideLen), stripeMat, -2.2, 0.62, H / 2 + 1);
+  box(new T.BoxGeometry(0.14, 0.12, sideLen), stripeMat, W + 2.2, 0.62, H / 2 + 1);
+  box(new T.BoxGeometry(farLen, 0.12, 0.14), stripeMat, W / 2, 0.62, -3);
+  box(new T.BoxGeometry(farLen, 0.12, 0.14), accentMat, W / 2, 0.3, -3);
+  for (let i = 0; i < 5; i++) { box(new T.BoxGeometry(0.14, 0.12, 1.2), accentMat, -2.2, 0.3, 1.5 + i * 3.2); box(new T.BoxGeometry(0.14, 0.12, 1.2), accentMat, W + 2.2, 0.3, 1.5 + i * 3.2); }
+
+  // tiered stands, textured with a speckled crowd pattern
+  const crowd = document.createElement('canvas'); crowd.width = 256; crowd.height = 64;
+  const cg = crowd.getContext('2d'); cg.fillStyle = '#12261c'; cg.fillRect(0, 0, 256, 64);
+  const tints = ['#2a4a3a', '#d8d2b8', '#dcef3f', '#c4572a', '#3d7a63', '#8aa79c', '#1b3a2a'];
+  for (let i = 0; i < 900; i++) { cg.fillStyle = tints[(Math.random() * tints.length) | 0]; cg.globalAlpha = 0.35 + Math.random() * 0.5; cg.beginPath(); cg.arc(Math.random() * 256, Math.random() * 64, 1.2 + Math.random() * 1.6, 0, 7); cg.fill(); }
+  const crowdTex = new T.CanvasTexture(crowd); crowdTex.wrapS = crowdTex.wrapT = T.RepeatWrapping;
+  const tierMat = (rep) => { const t = crowdTex.clone(); t.needsUpdate = true; t.repeat.set(rep, 1); return new T.MeshStandardMaterial({ map: t, roughness: 1, color: 0x8a9a8c }); };
+  const riserMat = new T.MeshStandardMaterial({ color: 0x0b1a12, roughness: 1 });
+  const tiers = 6, step = 0.9, rise = 0.55;
+  for (let i = 0; i < tiers; i++) {
+    const d = 2.6 + i * step, y = i * rise;
+    const zc = H / 2 + 1, sideLenT = H + 8 + i * 2 * step;
+    // side tiers
+    const l = box(new T.BoxGeometry(step, rise, sideLenT), riserMat, -d - step / 2, y + rise / 2, zc);
+    const r = box(new T.BoxGeometry(step, rise, sideLenT), riserMat, W + d + step / 2, y + rise / 2, zc);
+    const lt = new T.Mesh(new T.PlaneGeometry(sideLenT, step), tierMat(sideLenT / 2)); lt.rotation.set(-Math.PI / 2, 0, Math.PI / 2); lt.position.set(-d - step / 2, y + rise + 0.005, zc); scene.add(lt);
+    const rt = new T.Mesh(new T.PlaneGeometry(sideLenT, step), tierMat(sideLenT / 2)); rt.rotation.set(-Math.PI / 2, 0, Math.PI / 2); rt.position.set(W + d + step / 2, y + rise + 0.005, zc); scene.add(rt);
+    // far tier
+    const fz = -3.4 - i * step, farLenT = W + 2 * d;
+    box(new T.BoxGeometry(farLenT, rise, step), riserMat, W / 2, y + rise / 2, fz - step / 2);
+    const ft = new T.Mesh(new T.PlaneGeometry(farLenT, step), tierMat(farLenT / 2)); ft.rotation.x = -Math.PI / 2; ft.position.set(W / 2, y + rise + 0.005, fz - step / 2); scene.add(ft);
+    l.castShadow = r.castShadow = false;
+  }
+  // back wall behind the top tier
+  const wallH = 2.2, topY = tiers * rise;
+  const backMat = new T.MeshStandardMaterial({ color: 0x0a1810, roughness: 1 });
+  box(new T.BoxGeometry(W + 2 * (2.6 + tiers * step) + 2, wallH, 0.3), backMat, W / 2, topY + wallH / 2, -3.4 - tiers * step - 0.15);
+  box(new T.BoxGeometry(0.3, wallH, H + 8 + tiers * 2 * step), backMat, -(2.6 + tiers * step) - 0.15, topY + wallH / 2, H / 2 + 1);
+  box(new T.BoxGeometry(0.3, wallH, H + 8 + tiers * 2 * step), backMat, W + 2.6 + tiers * step + 0.15, topY + wallH / 2, H / 2 + 1);
+
+  // floodlight masts with glow
+  const mastMat = new T.MeshStandardMaterial({ color: 0x1c2a22, roughness: 0.7, metalness: 0.3 });
+  const lampMat = new T.MeshBasicMaterial({ color: 0xfff6d5 });
+  const masts = [[-4.5, -5], [W + 4.5, -5], [-4.5, H + 4], [W + 4.5, H + 4]];
+  for (const [x, z] of masts) {
+    box(new T.CylinderGeometry(0.08, 0.12, 9, 10), mastMat, x, 4.5, z).castShadow = false;
+    const head = box(new T.BoxGeometry(1.4, 0.5, 0.25), lampMat, x, 9.2, z, 0.35, x < 0 ? 0.5 : -0.5); head.castShadow = false;
+    const glow = new T.Sprite(new T.SpriteMaterial({ map: glowTex, color: 0xfff1c0, transparent: true, opacity: 0.85, blending: T.AdditiveBlending, depthWrite: false }));
+    glow.scale.set(4, 4, 1); glow.position.set(x, 9.2, z); scene.add(glow);
+  }
+
+  // sky haze dome
+  const skyGeo = new T.SphereGeometry(90, 24, 12);
+  const cols = new Float32Array(skyGeo.attributes.position.count * 3);
+  const top = new T.Color(0x030806), bot = new T.Color(0x0d2418);
+  for (let i = 0; i < skyGeo.attributes.position.count; i++) { const y = skyGeo.attributes.position.getY(i) / 90; const c = bot.clone().lerp(top, Math.max(0, y)); cols.set([c.r, c.g, c.b], i * 3); }
+  skyGeo.setAttribute('color', new T.BufferAttribute(cols, 3));
+  const sky = new T.Mesh(skyGeo, new T.MeshBasicMaterial({ vertexColors: true, side: T.BackSide, fog: false }));
+  sky.position.set(W / 2, 0, H / 2); scene.add(sky);
 }
 
 function fitCamera() {
   const cw = renderer.domElement.clientWidth || 1, ch = renderer.domElement.clientHeight || 1;
   camera.aspect = cw / ch; camera.updateProjectionMatrix();
-  const corners = [[0, 0, 0], [W, 0, 0], [0, 0, H], [W, 0, H], [0, 1.2, 0], [W, 1.2, 0]].map(a => new T.Vector3(...a));
-  const topLimit = 0.66, sideLimit = 0.95, bottomLimit = -0.97;
-  let lo = 8, hi = 40;
+  const corners = [[0, 0, 0], [W, 0, 0], [0, 0, H - 0.4], [W, 0, H - 0.4], [0, 1.2, 0], [W, 1.2, 0]].map(a => new T.Vector3(...a));
+  const topLimit = 0.6, sideLimit = 0.98, bottomLimit = -1.0;
+  let lo = 6, hi = 60;
   for (let i = 0; i < 18; i++) {
     const mid = (lo + hi) / 2;
     camera.position.copy(camBase.look).addScaledVector(camBase.dir, mid); camera.lookAt(camBase.look); camera.updateMatrixWorld();
@@ -183,7 +258,7 @@ function render(G) {
     for (let i = 0; i < cnt; i++) {
       const k = b.stack[i];
       const s = appear < 1 ? Math.max(0.001, 1 - Math.pow(1 - appear, 3)) : 1;
-      tmpP.set(b.x + CELL / 2 + jx, 0.15 + i * 0.3 * s + (1 - s) * 0.6, b.y + CELL / 2);
+      tmpP.set(b.x + CELL / 2 + jx, 0.17 + i * 0.34 * s + (1 - s) * 0.6, b.y + CELL / 2);
       tmpS.set(s, s, s); tmpQ.identity(); tmpM.compose(tmpP, tmpQ, tmpS);
       blocksMesh.setMatrixAt(n, tmpM);
       tmpC.set(k === 1 ? '#1f6b5c' : ctxRef.KIND_COLORS[k] || '#ffffff');
@@ -220,9 +295,17 @@ function render(G) {
     m.rotation.x += 0.08; m.rotation.z += 0.05;
     m.material.color.set(power ? '#ff6a6a' : '#dcef3f'); m.material.emissive.set(power ? '#ff3a3a' : '#9fb31a'); m.material.emissiveIntensity = power ? 1.1 : 0.55;
     m.userData.glow.material.color.set(power ? '#ff6a6a' : '#dcef3f'); m.userData.glow.scale.setScalar(power ? 4.5 : 3.2);
+    for (let ti = 0; ti < b.trail.length; ti++) {
+      const t = b.trail[ti]; let tm = trailMeshes[(bi - 1) * 8 + ti];
+      if (!tm) { tm = new T.Mesh(new T.SphereGeometry(1, 10, 8), new T.MeshBasicMaterial({ color: 0xdcef3f, transparent: true, opacity: 0.25, blending: T.AdditiveBlending, depthWrite: false })); trailMeshes[(bi - 1) * 8 + ti] = tm; scene.add(tm); }
+      const f = (ti + 1) / (b.trail.length + 1);
+      tm.visible = true; tm.position.set(t.x, b.r, t.y); tm.scale.setScalar(b.r * (0.3 + 0.6 * f)); tm.material.opacity = 0.05 + 0.3 * f; tm.material.color.set(power ? '#ff6a6a' : '#dcef3f');
+    }
+    for (let ti = b.trail.length; ti < 8; ti++) if (trailMeshes[(bi - 1) * 8 + ti]) trailMeshes[(bi - 1) * 8 + ti].visible = false;
     if (!lightSet) { ballLight.position.set(b.x, b.r + 0.6, b.y); ballLight.color.set(power ? '#ff6a6a' : '#dcef3f'); ballLight.intensity = power ? 1.6 : 0.9; lightSet = true; }
   }
   for (let i = bi; i < ballMeshes.length; i++) ballMeshes[i].visible = false;
+  for (let i = bi * 8; i < trailMeshes.length; i++) if (trailMeshes[i]) trailMeshes[i].visible = false;
   if (!lightSet) ballLight.intensity = 0;
 
   // items
@@ -249,5 +332,6 @@ function render(G) {
   renderer.render(scene, camera);
 }
 
+window.__r3 = () => ({ scene, camera, blocksMesh, renderer }); // debug
 return { init, resize, render, pointerToGround };
 })();
