@@ -30,15 +30,15 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-si
 <header class="hero">
   <div class="eyebrow">Deliverables, timeline &amp; budget · Prepared by Zyphex Tech · September 2026</div>
   <h1>Baseline Breaker <span class="accent">plan &amp; budget</span></h1>
-  <p class="lede">What will be delivered, when, and what it costs: the development investment by release, and the monthly running cost after launch at two audience sizes, up to 500 monthly players and 500 to 10,000 monthly players.</p>
+  <p class="lede">What will be delivered, when, and what it costs: the cash investment to build and launch on all three platforms, the monthly running cost after launch at up to 500 and at 500 to 10,000 monthly players, and the engineering fee by release.</p>
   <div class="meta"><span><b>Currency</b> INR, USD shown at ₹84</span><span><b>Rate</b> ₹12,000 per engineering day (≈ $143)</span><span><b>Taxes</b> excluded</span></div>
 </header>
 
 <div class="kpis">
-  <div class="kpi"><div class="k">Development, all releases</div><div class="v">₹10.8 lakh</div><div class="n">≈ $12,860 · 90 engineering days over 12 weeks</div></div>
+  <div class="kpi"><div class="k">Development cost · essential</div><div class="v">₹19,400</div><div class="n">≈ $230 · accounts, domain, sound licence</div></div>
+  <div class="kpi"><div class="k">Development cost · recommended</div><div class="v">₹70,700 – ₹85,700</div><div class="n">≈ $840 – $1,020 · adds device testing, backend, CI, legal review, composed audio</div></div>
   <div class="kpi"><div class="k">Monthly, 0–500 players</div><div class="v">₹16,800</div><div class="n">≈ $200 with Standby support · ₹800 without</div></div>
   <div class="kpi"><div class="k">Monthly, 500–10k players</div><div class="v">₹34,900</div><div class="n">≈ $415 with Rally support · ₹2,900 without</div></div>
-  <div class="kpi"><div class="k">One-time platform fees</div><div class="v">≈ ₹10,400</div><div class="n">Apple annual + Google one-time</div></div>
 </div>
 
 <h2>1. Deliverables and timeline</h2>
@@ -72,26 +72,38 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-si
 <p>Go-live dates depend on store review (Apple 1–3 days per round, Google 3–7 days for a new app) and on the client's developer accounts being opened in week 1. Apple company verification can take up to two weeks.</p>
 
 <h2>2. Development cost</h2>
-<div class="table-wrap"><table>
-<thead><tr><th>Release</th><th>Scope</th><th class="num">Days</th><th class="num">INR</th><th class="num">USD</th></tr></thead>
-<tbody>
-<tr><td>Version 1.0 build</td><td>Engine, 3D stadium, 30 courts, six boosts, combo scoring, three platforms, all documents</td><td class="num">12</td><td class="num">Delivered</td><td class="num">—</td></tr>
-<tr><td>Release 1.0 · Ship</td><td>Device QA, performance, sound, analytics, listings, submissions</td><td class="num">15</td><td class="num">₹1,80,000</td><td class="num">$2,140</td></tr>
-<tr><td>Release 1.1 · Play every day</td><td>Accounts, boards, daily, endless, cosmetics, achievements, push, share, branding, offline, languages, accessibility, tests</td><td class="num">39</td><td class="num">₹4,68,000</td><td class="num">$5,570</td></tr>
-<tr><td>Release 1.2 · Grow</td><td>Ads and purchases, events, tournaments, new boosts and boss courts, editor, ghost rally</td><td class="num">36</td><td class="num">₹4,32,000</td><td class="num">$5,140</td></tr>
-<tr class="total"><td>Total development</td><td></td><td class="num">90</td><td class="num">₹10,80,000</td><td class="num">$12,860</td></tr>
-</tbody></table></div>
-<div class="note">Each release can be approved on its own. Release 1.0 alone takes the game to both stores for ₹1.8 lakh. A 15% contingency applies to fixed-scope engagements.</div>
+<p>The cash investment needed to build and launch the game on the web, Google Play and the App Store. Engineering time is not included here; it is shown separately in section 4.</p>
 
-<h3>One-time platform costs</h3>
+<h3>Essential · required to launch version 1.0</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>Item</th><th>Notes</th><th class="num">Cost</th></tr></thead>
+<thead><tr><th>Item</th><th>Type</th><th class="num">INR</th><th class="num">USD</th></tr></thead>
 <tbody>
-<tr><td>Apple Developer Program</td><td>Annual; required for the App Store and TestFlight</td><td class="num">$99 / year ≈ ₹8,300</td></tr>
-<tr><td>Google Play Console</td><td>One-time registration</td><td class="num">$25 ≈ ₹2,100</td></tr>
-<tr><td>Domain name</td><td>Optional custom web address</td><td class="num">≈ ₹1,000 / year</td></tr>
-<tr><td>Sound library or composer</td><td>Included in release 1.0 days; media licence billed at cost</td><td class="num">₹8,000 – ₹40,000</td></tr>
+<tr><td>Apple Developer Program</td><td>Annual, first year</td><td class="num">₹8,300</td><td class="num">$99</td></tr>
+<tr><td>Google Play Console registration</td><td>One-time</td><td class="num">₹2,100</td><td class="num">$25</td></tr>
+<tr><td>D-U-N-S number for company accounts</td><td>One-time</td><td class="num">₹0</td><td class="num">$0</td></tr>
+<tr><td>Web hosting and CDN (Cloudflare Pages or GitHub Pages)</td><td>Free tier</td><td class="num">₹0</td><td class="num">$0</td></tr>
+<tr><td>Domain name</td><td>Annual</td><td class="num">₹1,000</td><td class="num">$12</td></tr>
+<tr><td>SSL certificate</td><td>Included with hosting</td><td class="num">₹0</td><td class="num">$0</td></tr>
+<tr><td>Android SDK, emulators, Xcode, simulators</td><td>Free tooling</td><td class="num">₹0</td><td class="num">$0</td></tr>
+<tr><td>Fonts, icon and splash generation</td><td>Free tooling</td><td class="num">₹0</td><td class="num">$0</td></tr>
+<tr><td>Royalty-free sound effects pack</td><td>One-time licence</td><td class="num">₹8,000</td><td class="num">$95</td></tr>
+<tr><td>Password vault for signing keys</td><td>Free tier</td><td class="num">₹0</td><td class="num">$0</td></tr>
+<tr class="total"><td>Essential total</td><td></td><td class="num">₹19,400</td><td class="num">$230</td></tr>
 </tbody></table></div>
+
+<h3>Recommended · adds quality and a safer launch</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Item</th><th>Type</th><th class="num">INR</th><th class="num">USD</th></tr></thead>
+<tbody>
+<tr><td>Everything in Essential</td><td></td><td class="num">₹19,400</td><td class="num">$230</td></tr>
+<tr><td>Device cloud for real-phone testing (BrowserStack App Live), 2 months</td><td>Monthly during build</td><td class="num">₹5,000</td><td class="num">$60</td></tr>
+<tr><td>Composed theme and layered sound set in place of the stock pack</td><td>One-time</td><td class="num">₹25,000 – ₹40,000</td><td class="num">$300 – $475</td></tr>
+<tr><td>Backend for release 1.1 (Supabase Pro), build and staging, 3 months</td><td>Monthly during build</td><td class="num">₹6,300</td><td class="num">$75</td></tr>
+<tr><td>Continuous integration macOS build minutes (GitHub Actions), 3 months</td><td>Monthly during build</td><td class="num">₹5,000</td><td class="num">$60</td></tr>
+<tr><td>Legal review of privacy policy and terms</td><td>One-time</td><td class="num">₹10,000</td><td class="num">$120</td></tr>
+<tr class="total"><td>Recommended total</td><td></td><td class="num">₹70,700 – ₹85,700</td><td class="num">$840 – $1,020</td></tr>
+</tbody></table></div>
+<div class="note">Free at these volumes: analytics (PostHog or Firebase), crash reporting (Sentry), push notifications (Firebase or OneSignal), remote configuration, authentication email, AdMob and Stripe accounts, TestFlight and Play internal testing. Store commission of 15% on in-app sales is deducted from revenue, not billed.</div>
 
 <h2>3. Monthly investment after development</h2>
 <p>Infrastructure is priced at list rates for the services the game uses. Support is the retainer level appropriate to the audience size; it can be declined, in which case only the infrastructure line applies.</p>
@@ -105,7 +117,7 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-si
 <tr><td>Crash reporting</td><td>Free tier (Sentry): ₹0</td><td>Free tier: ₹0</td></tr>
 <tr><td>Push notifications</td><td>Free tier (Firebase or OneSignal): ₹0</td><td>Free tier: ₹0</td></tr>
 <tr><td>Remote configuration</td><td>Free (Firebase): ₹0</td><td>Free: ₹0</td></tr>
-<tr><td>Apple membership, monthly share</td><td>≈ ₹700</td><td>≈ ₹700</td></tr>
+<tr><td>Apple membership renewal, monthly share (from year two; first year is in development cost)</td><td>≈ ₹700</td><td>≈ ₹700</td></tr>
 <tr><td>Domain, monthly share</td><td>≈ ₹85</td><td>≈ ₹85</td></tr>
 <tr class="total"><td>Infrastructure per month</td><td>≈ ₹800 (≈ $10)</td><td>≈ ₹2,900 (≈ $35)</td></tr>
 <tr><td>Support retainer</td><td>Standby, 2 engineering days: ₹16,000</td><td>Rally, 4 engineering days: ₹32,000</td></tr>
@@ -117,13 +129,26 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-si
 <li>Above 10,000 monthly players the backend moves to a larger compute tier and analytics becomes usage-billed; a separate estimate is provided at that point.</li>
 </ul>
 
-<h2>4. Payment schedule</h2>
+<h2>4. Engineering services</h2>
+<p>Professional fees for the work in section 1, quoted per release at ₹12,000 per engineering day. Each release can be approved on its own; a 15% contingency applies to fixed-scope engagements.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Release</th><th>Scope</th><th class="num">Days</th><th class="num">INR</th><th class="num">USD</th></tr></thead>
+<tbody>
+<tr><td>Version 1.0 build</td><td>Engine, 3D stadium, 30 courts, six boosts, combo scoring, three platforms, all documents</td><td class="num">12</td><td class="num">Delivered</td><td class="num">—</td></tr>
+<tr><td>Release 1.0 · Ship</td><td>Device QA, performance, sound, analytics, listings, submissions</td><td class="num">15</td><td class="num">₹1,80,000</td><td class="num">$2,140</td></tr>
+<tr><td>Release 1.1 · Play every day</td><td>Accounts, boards, daily, endless, cosmetics, achievements, push, share, branding, offline, languages, accessibility, tests</td><td class="num">39</td><td class="num">₹4,68,000</td><td class="num">$5,570</td></tr>
+<tr><td>Release 1.2 · Grow</td><td>Ads and purchases, events, tournaments, new boosts and boss courts, editor, ghost rally</td><td class="num">36</td><td class="num">₹4,32,000</td><td class="num">$5,140</td></tr>
+<tr class="total"><td>Total services</td><td></td><td class="num">90</td><td class="num">₹10,80,000</td><td class="num">$12,860</td></tr>
+</tbody></table></div>
+
+<h2>5. Payment schedule</h2>
 <div class="table-wrap"><table>
 <thead><tr><th>Milestone</th><th>Trigger</th><th class="num">Amount</th></tr></thead>
 <tbody>
-<tr><td>Release 1.0 · Ship</td><td>50% on approval, 50% when both stores approve the app</td><td class="num">₹1,80,000</td></tr>
-<tr><td>Release 1.1</td><td>50% on approval, 50% on submission</td><td class="num">₹4,68,000</td></tr>
-<tr><td>Release 1.2</td><td>50% on approval, 50% on submission</td><td class="num">₹4,32,000</td></tr>
+<tr><td>Development cost (essential or recommended)</td><td>On approval, billed at cost with receipts</td><td class="num">₹19,400 or ₹70,700 – ₹85,700</td></tr>
+<tr><td>Release 1.0 · Ship services</td><td>50% on approval, 50% when both stores approve the app</td><td class="num">₹1,80,000</td></tr>
+<tr><td>Release 1.1 services</td><td>50% on approval, 50% on submission</td><td class="num">₹4,68,000</td></tr>
+<tr><td>Release 1.2 services</td><td>50% on approval, 50% on submission</td><td class="num">₹4,32,000</td></tr>
 <tr><td>Support retainer</td><td>Monthly in advance from go-live; three-month minimum</td><td class="num">₹16,000 or ₹32,000</td></tr>
 </tbody></table></div>
 
