@@ -584,6 +584,7 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) pause
 
 window.__bb = G; // debug handle (autoplay toggle, state inspection)
 G.simulate = ms => { for (let t = 0; t < ms; t += 16) update(16); render(); };
+if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) { const h = document.querySelector('.count-hint'); if (h) h.innerHTML = 'Touch &amp; hold<br>to move'; }
 startDemo();
 requestAnimationFrame(frame);
 })();

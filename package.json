@@ -1,0 +1,34 @@
+{
+  "name": "baseline-breaker",
+  "version": "1.0.0",
+  "description": "A top-down tennis brick-breaker in plain HTML, CSS and JavaScript. No build step.",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "stage": "python3 stage.py",
+    "sync": "python3 stage.py && npx cap sync",
+    "android": "python3 stage.py && npx cap sync android && npx cap open android",
+    "ios": "python3 stage.py && npx cap sync ios && npx cap open ios",
+    "apk": "python3 stage.py && npx cap sync android && cd android && ./gradlew assembleDebug",
+    "aab": "python3 stage.py && npx cap sync android && cd android && ./gradlew bundleRelease"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zekst/baseline-breaker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/zekst/baseline-breaker/issues"
+  },
+  "homepage": "https://github.com/zekst/baseline-breaker#readme",
+  "private": "true",
+  "dependencies": {
+    "@capacitor/android": "^8.5.1",
+    "@capacitor/cli": "^8.5.1",
+    "@capacitor/core": "^8.5.1",
+    "@capacitor/ios": "^8.5.1"
+  }
+}

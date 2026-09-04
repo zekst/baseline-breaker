@@ -42,12 +42,30 @@ gh api -X POST repos/<owner>/baseline-breaker/pages -f build_type=legacy -f 'sou
 
 The site then serves from `https://<owner>.github.io/baseline-breaker/`.
 
+## Mobile apps (Capacitor)
+
+The same web build is wrapped as native Android and iOS apps with Capacitor. `stage.py` copies the game into `www/` with a bundled three.js so the apps work offline; `npx cap sync` pushes it into the native projects.
+
+```bash
+npm install
+npm run sync
+```
+
+- App id `com.zekst.baselinebreaker`, portrait only, dark splash and tennis-ball icon (sources in `assets/`, regenerate with `npx @capacitor/assets generate`).
+- **Android**: `npm run apk` builds a debug APK at `android/app/build/outputs/apk/debug/app-debug.apk`; `npm run aab` builds the signed release bundle at `android/app/build/outputs/bundle/release/app-release.aab` for Google Play. Signing reads `android/keystore.properties` and `android/upload-keystore.jks` (both git-ignored; keep them safe, Play needs the same key for every update). Needs the Android SDK at the path in `android/local.properties`.
+- **iOS**: `npm run ios` opens the Xcode project (`ios/App/App.xcodeproj`, Swift Package Manager, no CocoaPods). Select your team under Signing & Capabilities, then Product → Archive and upload with the Organizer.
+
+Publishing checklist:
+1. Google Play Console (one-time developer fee): create the app, upload the `.aab`, fill the store listing with screenshots from a phone, complete the content rating and data-safety forms, then roll out to a testing track before production.
+2. App Store Connect (Apple Developer Program membership): create the app record with the bundle id, upload the archive from Xcode, add screenshots for 6.7" and 6.5" iPhones and 12.9" iPad, then submit for review.
+
 ## Files
 
 - `index.html` shell, screens and HUD
 - `style.css` single dark night-court theme
 - `game.js` engine: physics, bonuses, scoring, level flow, input
 - `render3d.js` three.js renderer: court, instanced bricks, paddle, balls, boosts, particles, camera fit
+- `capacitor.config.json`, `android/`, `ios/` native wrappers; `stage.py` prepares `www/`
 - `levels.js` 30 layouts as 11×13 grids. Each token lists stacked cube kinds bottom to top: `0` empty, `1` unbreakable, `2`–`5` breakable kinds worth 1–4 points. Stack height is the brick's hit points.
 
 ## Scoring
