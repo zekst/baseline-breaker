@@ -6,5 +6,6 @@ android/keystore.properties
 android/local.properties
 assets/
 dist/
+ios/App/LocalPackages/capacitor-swift-pm/Frameworks/
 node_modules/
 www/

@@ -53,7 +53,7 @@ npm run sync
 
 - App id `com.zekst.baselinebreaker`, portrait only, dark splash and tennis-ball icon (sources in `assets/`, regenerate with `npx @capacitor/assets generate`).
 - **Android**: `npm run apk` builds a debug APK at `android/app/build/outputs/apk/debug/app-debug.apk`; `npm run aab` builds the signed release bundle at `android/app/build/outputs/bundle/release/app-release.aab` for Google Play. Signing reads `android/keystore.properties` and `android/upload-keystore.jks` (both git-ignored; keep them safe, Play needs the same key for every update). Needs the Android SDK at the path in `android/local.properties`.
-- **iOS**: `npm run ios` opens the Xcode project (`ios/App/App.xcodeproj`, Swift Package Manager, no CocoaPods). Select your team under Signing & Capabilities, then Product → Archive and upload with the Organizer.
+- **iOS**: `npm run ios` opens the Xcode project (`ios/App/App.xcodeproj`, Swift Package Manager, no CocoaPods). Select your team under Signing & Capabilities, then Product → Archive and upload with the Organizer. The Capacitor runtime comes from a local package at `ios/App/LocalPackages/capacitor-swift-pm`; its frameworks are not committed, so run `ios/fetch-frameworks.sh` once after cloning. (Note: `npx cap sync ios` rewrites `ios/App/CapApp-SPM/Package.swift` back to the GitHub dependency; either accept that or re-point it at the local package.)
 
 Publishing checklist:
 1. Google Play Console (one-time developer fee): create the app, upload the `.aab`, fill the store listing with screenshots from a phone, complete the content rating and data-safety forms, then roll out to a testing track before production.
